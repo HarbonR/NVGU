@@ -1,0 +1,100 @@
+2 часть 13 задание. 
+13. Дана прямоугольная матрица. Найти строку с наибольшей и наименьшей суммой элементов. Вывести на печать 
+найденные строки и суммы их элементов.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+#include <time.h> /// Библиотека для работы со временем
+
+int main()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    srand (time(NULL)); /// Ключ для рандомайзера
+    int **twoDimensionalDynamicArrayNumbers = NULL; /// Переменная указатель на указатель (Двумерный динамический массив чисел)
+    int height; /// Высота (Количество строк)
+    int width; /// Ширина (Количество столбцов)
+    int minSumElements = 0; /// Наименьшая сумма элементов
+    int indexMinSumElements = 0; /// Индекс строки с наименьшей суммой элементов
+    int maxSumElements = 0; /// Наибольшая сумма элементов
+    int indexMaxSumElements = 0; /// Индекс строки с наибольшей суммой элементов
+    int variableSum; /// Переменная сумма
+    printf ("Введите количество строк: ");
+    scanf ("%d", &height);
+    printf("Введите количество столбцов: ");
+    scanf ("%d", &width);
+    twoDimensionalDynamicArrayNumbers = (int**)malloc(height * sizeof(int*)); /// Выделяем динамическую память для хранения ссылок на динамическую память
+    /// Пробигаемся по массиву ссылок и выделяем для каждой ссылки динамическую память
+    for (int i = 0; i < height; i++)
+    {
+        twoDimensionalDynamicArrayNumbers[i] = (int*)malloc(width * sizeof(int)); /// Выделяем динамическую память
+    }
+    /// Заполняем двумерный массив рандомными числами
+    for (int i = 0; i < height; i++) /// Пробигаемся по столбцам
+    {
+        for (int j = 0; j < width; j++) /// Пробигаемся по строкам
+        {
+            twoDimensionalDynamicArrayNumbers[i][j] = rand () % 9 + 1;
+        }
+    }
+    /// Выводим двухмерный массив и сумму его каждой строки в консоль
+    printf ("Двумерный массив:\n");
+    for (int i = 0; i < height; i++) /// Пробигаемся по столбцам
+    {
+        variableSum = 0; /// Обнуляем переменную
+        for (int j = 0; j < width; j++) /// Пробигаемся по строкам
+        {
+            printf ("%d ", twoDimensionalDynamicArrayNumbers[i][j]);
+            variableSum += twoDimensionalDynamicArrayNumbers[i][j];
+        }
+        printf("= %d\n", variableSum);
+    }
+    /// Пробигаемся по первой строке массива, складываем числа и присваиваем это значение переменным minSumElements и maxSumElements
+    for (int i = 0; i < width; i++)
+    {
+        minSumElements += twoDimensionalDynamicArrayNumbers[0][i];
+    }
+    maxSumElements = minSumElements; /// Присваиваем значение переменной minSumElements в переменную maxSumElements
+    /// Пробигаемся по двумерному массиву, присваиваем значения наименьшей и наибольшей суммы элементов строки, а так же их индексы в соответсвующие переменные
+    for (int i = 0; i < height; i++)
+    {
+        variableSum = 0; /// Обнуляем переменную
+        for (int j = 0; j < width; j++)
+        {
+            variableSum += twoDimensionalDynamicArrayNumbers[i][j]; /// Складываем элементы строки в переменную сумму
+        }
+        if (variableSum <= minSumElements)
+        {
+            minSumElements = variableSum; /// Присваиваем переменной minSumElements значение переменной variableSum
+            indexMinSumElements = i; /// Присваиваем текущий индекс строки
+        }
+        if (variableSum >= maxSumElements)
+        {
+            maxSumElements = variableSum; /// Присваиваем переменной maxSumElements значение переменной variableSum
+            indexMaxSumElements = i; /// Присваиваем текущий индекс строки
+        }
+    }
+    /// Пробигаемся по строке с минимальной суммой элементов и выводим эти элементы и их сумму в консоль
+    printf ("Строка(№ %d) с наименьшей суммой элементов: ", indexMinSumElements + 1);
+    for (int i = 0; i < width; i++)
+    {
+        printf ("%d ", twoDimensionalDynamicArrayNumbers[indexMinSumElements][i]);
+    }
+    printf ("= %d", minSumElements);
+    /// Пробигаемся по строке с максимальной суммой элементов и выводим эти элементы и их сумму в консоль
+    printf ("\nСтрока(№ %d) с наибольшей суммой элементов: ", indexMaxSumElements + 1);
+    for (int i = 0; i < width; i++)
+    {
+        printf ("%d ", twoDimensionalDynamicArrayNumbers[indexMaxSumElements][i]);
+    }
+    printf ("= %d", maxSumElements);
+    /// Пробигаемся по массиву ссылок и освобождаем память
+    for (int i = 0; i < height; i++)
+    {
+        free(twoDimensionalDynamicArrayNumbers[i]); /// Освобождаем динамическую память
+    }
+    free(twoDimensionalDynamicArrayNumbers); /// Освобождаем динамическую память
+    twoDimensionalDynamicArrayNumbers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

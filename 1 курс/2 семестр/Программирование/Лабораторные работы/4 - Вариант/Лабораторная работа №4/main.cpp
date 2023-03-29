@@ -1,0 +1,314 @@
+#include <stdio.h> /// Стандартная библиотека ввода вывода.
+#include <conio.h> /// Библиотека для функций ввода вывода с клавиатуры.
+#include <stdlib.h> /// Стандартная библиотека.
+#include <locale.h> /// Библиотека для локализации языков.
+#include <time.h> /// Бибилотека для работы о временем.
+
+//====================================================================================================
+/// Функции для Part 1 exercise 4.
+
+/// Функция принимает количество элементов. Выделяет память под динамический массив на N элементов. Возвращает указатель.
+int* mallocForDynamicArrayTypeInt (int numberElements)
+{
+    return (int*)malloc(numberElements * sizeof(int));
+}
+
+/// Функция принимает массив типа Int, количество элементов. Заполняет массив рандомными цифрами. Ничего не возвращает.
+void fillArrayTypeIntRandomDigits (int inputArrayTypeInt[], int numberElements)
+{
+    int i;
+    for (i = 0; i < numberElements; i++)
+    {
+        inputArrayTypeInt[i] = rand() % 9 + 1;
+    }
+}
+
+/// Функция принимает массив типа Int, количество элементов. Выводит массив в консоль. Ничего не возвращает.
+void printArrayTypeInt (int inputArrayTypeInt[], int numberElements)
+{
+    int i;
+    for (i = 0; i < numberElements; i++)
+    {
+        printf("%d ", inputArrayTypeInt[i]);
+    }
+    printf("\n");
+}
+
+/// Функция принимает указатель на первый элемент массива переставляет элементы массива задом-наперед. Ничего не возвращает.
+void changeArrayTypeInt (int inputArrayTypeInt[], int numberElements)
+{
+    int i, variableX;
+    for (i = 0; i < numberElements/2; i++)
+    {
+        variableX = inputArrayTypeInt[i]; /// Сохраняет в переменную значение первого жлемента массива.
+        inputArrayTypeInt[i] = inputArrayTypeInt[(numberElements - 1 - i)]; /// Присваивает элементу массива под индексом i элемент массива под индексом numberElements - 1 - i (последний элемент).
+        inputArrayTypeInt[(numberElements - 1 - i)] = variableX; /// Присваивает элементу массива под индексом numberElements - 1 - i (последний элемент) значение переменной variableX.
+    }
+}
+
+//====================================================================================================
+/// Функции для Part 1 exercise 14.
+
+/// Функция принимает переменную (number - число). Возвращает 1 если оно простое. Иначе 0.
+int primeNumber (int number)
+{
+    int i;
+    if (number > 1) /// Если number больше 1 выполнять
+    {
+        for (i = 2; i < number; i++)
+            if (number % i == 0) /// Если остаток от деления number на i = 0, выполнять
+                return 0; /// false
+        return 1; /// true
+    }
+    else
+        return 0; /// false
+}
+
+/// Функция принимает массив типа Int. Возвращает сумму чисел, порядковые номера которых являются простыми числами.
+int summNumber (int inputArrayTypeInt[], int numberElements)
+{
+    int i;
+    int summ = 0;
+    for (i = 0; i < numberElements; i++)
+    {
+        if (primeNumber(i) == 1)
+            summ += inputArrayTypeInt[i];
+    }
+    return summ;
+}
+
+/// Функция принимает массив типа Int, количество элементов. Заполняет массив числами от 0 до N. Ничего не возвращает.
+void fillArrayTypeIntSequenceNNumbers (int inputArrayTypeInt[], int numberElements)
+{
+    int i;
+    for (i = 0; i < numberElements; i++)
+    {
+        inputArrayTypeInt[i] = i;
+    }
+}
+
+//====================================================================================================
+/// Функции для Part 2 exercise 4.
+
+/// Функция принимает количество строк и столбцов. Выделяет память под двумерный динамический массив на N элементов. Возвращает указатель.
+int** mallocForTwoDimensionalDynamicArrayTypeInt (int heightArray, int widthArray)
+{
+    int i;
+    int **varriableForTwoDimensionalDynamicArray = (int**)malloc(heightArray * sizeof(int*));
+    for (i = 0; i < heightArray; i++)
+    {
+        varriableForTwoDimensionalDynamicArray[i] = (int*)malloc(widthArray * sizeof(int));
+    }
+    return varriableForTwoDimensionalDynamicArray;
+}
+
+/// Функция принимает указатель на двумерный массив, высоту и ширину массива. Заполняет двумерный массив рандомными числами. Ничего не возвращает.
+void fillTwoDimensionalArrayTypeIntRandomDigits (int **inputTwoDimensionalArrayTypeInt, int heightArray, int widthArray)
+{
+    int i, j;
+    for (i = 0; i < heightArray; i++)
+    {
+        for (j = 0; j < widthArray; j++)
+        {
+            inputTwoDimensionalArrayTypeInt[i][j] = rand() % 9 + 1;
+        }
+    }
+}
+
+/// Функция принимает указатель на двумерный массив, высоту и ширину массива. Выводит массив в консоль. Ничего не возвращает.
+void printTwoDimensionalArrayTypeIntRandomDigits (int **inputTwoDimensionalArrayTypeInt, int heightArray, int widthArray)
+{
+    int i, j;
+    for (i = 0; i < heightArray; i++)
+    {
+        for (j = 0; j < widthArray; j++)
+        {
+            printf("%d ", inputTwoDimensionalArrayTypeInt[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+/// Функция принимает указатель на двумерный массив, высоту и ширину массива. Возвращает количество четных элементов в думерном массиве.
+int countNumberEvenElementsInTwoDimensionalArrayTypeInt (int **inputTwoDimensionalArrayTypeInt, int heightArray, int widthArray)
+{
+    int i, j;
+    int counter = 0;
+    for (i = 0; i < heightArray; i++)
+        for (j = 0; j < widthArray; j++)
+            if (inputTwoDimensionalArrayTypeInt[i][j] % 2 == 0)
+                counter++;
+    return counter;
+}
+
+/// Функция принимает указатель на двумерный массив, высоту и ширину массива. Принимает указатель на массив и количество элементов. Заполняет массив четными элементами из двухмерного массива. Ничего не возвращает.
+void fillArrayTypeIntEvenElementsFromTwoDimensionalArrayTypeInt (int **inputTwoDimensionalArrayTypeInt, int heightArray, int widthArray, int *inputArrayTypeInt, int numberElements)
+{
+    int i, j;
+    int k = 0;
+    for (i = 0; i < heightArray; i++)
+    {
+        for (j = 0; j < widthArray; j++)
+        {
+            if (inputTwoDimensionalArrayTypeInt[i][j] % 2 == 0)
+            {
+                inputArrayTypeInt[k] = inputTwoDimensionalArrayTypeInt[i][j];
+                k++;
+            }
+        }
+    }
+}
+
+//====================================================================================================
+/// Функции для Part 2 exercise 14.
+
+/// Функция принимает указатель на двухмерный массив. Определяет максимальную и минимальную сумму столбцов. Выводит столбцы с минимальной и максимальной суммой и их сумму в консоль. Ничего не возвращает.
+void minMaxSummElemetsArrayTypeInt (int **inputTwoDimensionalArrayTypeInt, int heightArray, int widthArray)
+{
+    int i, j;
+    int summ = 0; /// Переменная для суммы столбца
+    int min = 0; /// Минимальная сумма из столбцов
+    int indexMin = 0; /// Индекс столбца с минимальной суммой
+    int max = 0; /// Максимальная сумма из столбцов
+    int indexMax = 0; /// Индекс столбца с максимальной суммой
+    int k = 0;
+    for (i = 0; i < widthArray; i++)
+    {
+        for(j = 0; j < heightArray; j++)
+        {
+            summ += inputTwoDimensionalArrayTypeInt[j][i]; /// Складываются значения из столбца
+        }
+        for (; k < 1; k++) /// Присваиваем переменным min и max значение суммы первого столбца
+        {
+            min = summ;
+            max = summ;
+        }
+        if (summ <= min)
+        {
+            min = summ;
+            indexMin = i;
+        }
+        if (summ >= max)
+        {
+            max = summ;
+            indexMax = i;
+        }
+        summ = 0; /// Обнуляем переменную
+    }
+    printf("Наименьшая сумма элементов: ");
+    for (i = indexMin; i == indexMin; i++)
+        for(j = 0; j < heightArray; j++)
+            printf("%d ",inputTwoDimensionalArrayTypeInt[j][i]);
+    printf("= %d \n", min);
+    printf("Наибольшая сумма элементов: ");
+    for (i = indexMax; i == indexMax; i++)
+        for(j = 0; j < heightArray; j++)
+            printf("%d ",inputTwoDimensionalArrayTypeInt[j][i]);
+    printf("= %d \n", max);
+}
+
+//====================================================================================================
+
+int main ()
+{
+    setlocale(LC_ALL, "Rus"); /// Локализуем русский язык.
+    srand(time(NULL)); /// Ключ для рандомайзера.
+    //====================================================================================================
+    /// Глобальные переменные.
+    char variableForMenu; /// Переменная для хранения символа для меню.
+    int *pDynamicArrayTypeInt = NULL; /// Указатель на динамический массив типа int.
+    int numberElementsDynamicArray; /// Переменная для кол-ва элементов динамического массива.
+    int **pTwoDimensionalDynamicArrayTypeInt = NULL; /// Указатель на двумерный динамический массив типа int
+    int heightArray; /// Высота массива (количество строк).
+    int widthArray; /// Ширина массива (количество столбцов).
+    int i; /// Переменная для циклов for
+    //====================================================================================================
+    while(variableForMenu != '5')
+    {
+        printf("==============================Menu Laboratory Work 4==============================\n");
+        printf("1. (Part 1 exercise 4) Дан одномерный массив. Переставить элементы массива задом-наперед.\n");
+        printf("2. (Part 1 exercise 14) Задана последовательность N чисел. Вычислить сумму чисел, порядковые номера которых являются простыми числами.\n");
+        printf("3. (Part 2 exercise 4) Дан двумерный массив. Сформировать одномерный массив только из четных элементов двумерного массива.\n");
+        printf("4. (Part 2 exercise 14) Дана прямоугольная матрица. Найти столбец с наибольшей и наименьшей суммой элементов. Вывести на печать найденные столбцы и суммы их элементов.\n");
+        printf("5. Exit\n");
+        printf("==================================================================================\n");
+        variableForMenu = getch(); /// Переменной присваивается введенное значение с клавиатуры.
+        system("cls"); /// Отчищаем консоль.
+        if (variableForMenu == '1')
+        {
+            printf("Введите количество элементов массива: ");
+            scanf("%d", &numberElementsDynamicArray);
+            pDynamicArrayTypeInt = mallocForDynamicArrayTypeInt(numberElementsDynamicArray); /// Выделяем память под массив.
+            fillArrayTypeIntRandomDigits(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Заполняем массив рандомными числами.
+            printf("Исходный массив: ");
+            printArrayTypeInt(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Вывести массив.
+            changeArrayTypeInt(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Изменяем массив.
+            printf("Измененный массив: ");
+            printArrayTypeInt(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Вывести массив.
+            free(pDynamicArrayTypeInt); /// Отчищаем памяь.
+            pDynamicArrayTypeInt = NULL; /// Отчищаем ссылку.
+            system("pause");
+            system("cls"); /// Отчищаем консоль.
+        }
+        if (variableForMenu == '2')
+        {
+            printf("Введите количество чисел: ");
+            scanf("%d", &numberElementsDynamicArray);
+            pDynamicArrayTypeInt = mallocForDynamicArrayTypeInt(numberElementsDynamicArray); /// Выделяем память под массив.
+            fillArrayTypeIntSequenceNNumbers(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Заполняем массив последовательностью чисел
+            printf("Последовательность чисел: ");
+            printArrayTypeInt(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Вывести массив.
+            printf("Сумма чисел, порядковые номера которых являются простыми числами: %d\n", summNumber(pDynamicArrayTypeInt, numberElementsDynamicArray));
+            free(pDynamicArrayTypeInt); /// Отчищаем памяь.
+            pDynamicArrayTypeInt = NULL; /// Отчищаем ссылку.
+            system("pause");
+            system("cls"); /// Отчищаем консоль.
+        }
+        if (variableForMenu == '3')
+        {
+            printf("Введите количество строк: ");
+            scanf("%d", &heightArray);
+            printf("Введите количество столбцов: ");
+            scanf("%d", &widthArray);
+            pTwoDimensionalDynamicArrayTypeInt = mallocForTwoDimensionalDynamicArrayTypeInt(heightArray, widthArray); /// Выделяем память под двумерный массив.
+            fillTwoDimensionalArrayTypeIntRandomDigits(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray); /// Заполняет динамический двумерный массив рандомными числами.
+            printf("Исходный массив:\n");
+            printTwoDimensionalArrayTypeIntRandomDigits(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray); /// Выводит двумерный динамический массив в консоль.
+            numberElementsDynamicArray = countNumberEvenElementsInTwoDimensionalArrayTypeInt(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray);
+            pDynamicArrayTypeInt = mallocForDynamicArrayTypeInt(numberElementsDynamicArray);
+            fillArrayTypeIntEvenElementsFromTwoDimensionalArrayTypeInt(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray, pDynamicArrayTypeInt, numberElementsDynamicArray);
+            printf("Массив из четных элементов: ");
+            printArrayTypeInt(pDynamicArrayTypeInt, numberElementsDynamicArray); /// Вывести массив.
+            //==================================================
+            for (i = 0; i < heightArray; i++)
+                free(pTwoDimensionalDynamicArrayTypeInt[i]); /// Отчищаем память
+            free(pTwoDimensionalDynamicArrayTypeInt);
+            //==================================================
+            pTwoDimensionalDynamicArrayTypeInt = NULL; /// Отчищаем ссылку.
+            free(pDynamicArrayTypeInt); /// Отчищаем памяь.
+            pDynamicArrayTypeInt = NULL; /// Отчищаем ссылку.
+            system("pause");
+            system("cls"); /// Отчищаем консоль.
+        }
+        if (variableForMenu == '4')
+        {
+            printf("Введите количество строк: ");
+            scanf("%d", &heightArray);
+            printf("Введите количество столбцов: ");
+            scanf("%d", &widthArray);
+            pTwoDimensionalDynamicArrayTypeInt = mallocForTwoDimensionalDynamicArrayTypeInt(heightArray, widthArray); /// Выделяем память под двумерный массив.
+            fillTwoDimensionalArrayTypeIntRandomDigits(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray); /// Заполняет динамический двумерный массив рандомными числами.
+            printf("Исходная матрица:\n");
+            printTwoDimensionalArrayTypeIntRandomDigits(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray); /// Выводит двумерный динамический массив в консоль.
+            minMaxSummElemetsArrayTypeInt(pTwoDimensionalDynamicArrayTypeInt, heightArray, widthArray);
+            //==================================================
+            for (i = 0; i < heightArray; i++)
+                free(pTwoDimensionalDynamicArrayTypeInt[i]); /// Отчищаем память
+            free(pTwoDimensionalDynamicArrayTypeInt);
+            //==================================================
+            pTwoDimensionalDynamicArrayTypeInt = NULL; /// Отчищаем ссылку.
+            system("pause");
+            system("cls"); /// Отчищаем консоль.
+        }
+    }
+}

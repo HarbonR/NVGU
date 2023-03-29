@@ -1,0 +1,116 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <conio.h> /// Библиотека функций ввода-вывода
+#include <locale.h> /// Библиотека для локализации языка
+
+typedef struct
+{
+    int number; /// Номер школы
+    char secondNameDirector[30]; /// Фамилия директора
+    int numberStydents; /// Кол-во учащихся
+    int numberTeachers; /// Кол-во учителей
+}typeSchools;
+
+/// Функция выводит школы в консоль
+void printSchools (typeSchools *inputSchools, int numberSchools)
+{
+    printf("\tНомер школы\tФамилия директора\tКоличество учащихся\tКоличество учителей\n");
+    for (int i = 0; i < numberSchools; i++)
+        printf("%d\t%d\t\t%s\t\t\t%d\t\t\t%d\n", i + 1, inputSchools[i].number, inputSchools[i].secondNameDirector, inputSchools[i].numberStydents, inputSchools[i].numberTeachers);
+}
+
+/// Функция сортирует по количеству учащихся
+void sortByNumberStydents (typeSchools *inputSchools, int numberSchools)
+{
+    typeSchools variableSchool; /// Переменная количество студентов
+    for (int i = 0; i < numberSchools - 1; i++)
+    {
+        for (int j = i + 1; j < numberSchools; j++)
+        {
+            if (inputSchools[i].numberStydents > inputSchools[j].numberStydents)
+            {
+                variableSchool = inputSchools[i];
+                inputSchools[i] = inputSchools[j];
+                inputSchools[j] = variableSchool;
+            }
+        }
+    }
+}
+
+/// Функция для изменения школы
+void changeShool (typeSchools *inputSchools, int inputNumberSchools, int numberSchol)
+{
+    for (int i = 0; i < inputNumberSchools; i++)
+    {
+        if (numberSchol == inputSchools[i].number)
+        {
+            printf ("Введите номер школы %d: ", i + 1);
+            scanf ("%d", &inputSchools[i].number);
+            printf ("Введите фамилию директора %d: ", i + 1);
+            scanf ("%s", &inputSchools[i].secondNameDirector);
+            printf ("Введите количество учащихся %d: ", i + 1);
+            scanf ("%d", &inputSchools[i].numberStydents);
+            printf ("Введите количество учителей %d: ", i + 1);
+            scanf ("%d", &inputSchools[i].numberTeachers);
+        }
+    }
+}
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    typeSchools *schools = NULL; /// Переменная указатель на структуру typeSchools
+    int numberSchools; /// Кол-во школ
+    char menu; /// Переменная для меню
+    int variableNumberShool; /// Переменная номер школы для изменения
+    printf("Введите количество школ: ");
+    scanf ("%d", &numberSchools);
+    schools = (typeSchools*)malloc(numberSchools * sizeof(typeSchools)); /// Выделяем динамическую память размером numberSchools тип данных typeSchools и присваиваем ссылку на динамическую память переменной указатель schools
+    for (int i = 0; i < numberSchools; i++)
+    {
+        printf ("Введите номер школы %d: ", i + 1);
+        scanf ("%d", &schools[i].number);
+        printf ("Введите фамилию директора %d: ", i + 1);
+        scanf ("%s", &schools[i].secondNameDirector);
+        printf ("Введите количество учащихся %d: ", i + 1);
+        scanf ("%d", &schools[i].numberStydents);
+        printf ("Введите количество учителей %d: ", i + 1);
+        scanf ("%d", &schools[i].numberTeachers);
+    }
+    system("pause"); /// Консоль ожидает нажатия
+    while (1)
+    {
+        system ("cls"); /// Очистить консоль
+        printf ("1. Сортировка по количеству учащихся\n");
+        printf ("2. Изменить\n");
+        printf ("3. Показать все школы\n");
+        printf("4. Выход\n");
+        menu = getch(); /// Присваивает нажатый символ переменной без отображения символа на экране
+        if (menu == '1')
+        {
+            system("cls"); /// Очистить консоль
+            sortByNumberStydents (schools, numberSchools);
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '2')
+        {
+            system("cls"); /// Очистить консоль
+            printSchools(schools, numberSchools);
+            printf("\nВведите номер школы которую хотите изменить: ");
+            scanf ("%d", &variableNumberShool);
+            changeShool (schools, numberSchools, variableNumberShool);
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '3')
+        {
+            system("cls"); /// Очистить консоль
+            printSchools(schools, numberSchools);
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '4')
+            break; /// Выйти из цикла
+    }
+    free(schools);  /// Освобождаем выделенную динамическую память
+    schools = NULL; /// Обнуляем переменную указатель
+    return 0;
+}

@@ -1,0 +1,153 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+
+/// Функция для заполнения строки тернирующим нулём
+void fillStrTZero (char *inputStr, int lengthStr)
+{
+    for (int i = 0; i < lengthStr; i++)
+    {
+        inputStr[i] = '\0';
+    }
+}
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    //==================================================
+    FILE *inputFile; /// Переменная типа FILE
+    FILE *outputFileEnglishWords; /// Переменная типа FILE (Английские слова)
+    FILE *outputFileRussianWords; /// Переменная типа FILE (Русские слова)
+    char inputStr[100] = "Привет Hello my меня зовут name is"; /// Переменная хранит строку которая записывается в input файл
+    int lengthInputStr = 0; /// Длина inputStr
+    char outputStr[100]; /// Переменная хранит строку в которую записываются символы из input файла
+    char variableStr[30]; /// Переменная строка
+    int counter = 0; /// Индекс переменной строки
+    int booleanForSpase = 0; /// Булевая переменная для пробела
+    char englishWords[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; /// Английские буквы
+    char russianWords[] = "АБВГДЕЁЖЗИЙКЛЬНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя"; /// Русские буквы
+    //==================================================
+    /*
+    printf ("Запишите строку: ");
+    gets (inputStr); /// Функция записывает строку из консоли в переменную inputStr
+    */
+    //==================================================
+    /// Проверяем есть ли в конце inputStr пробел, если нет добавляем
+    for (int i = 0; inputStr[i] != '\0'; i++)
+        lengthInputStr++;
+    if (inputStr[lengthInputStr] != ' ')
+        inputStr[lengthInputStr] = ' ';
+    //==================================================
+    inputFile = fopen ("inputFile.txt", "wt"); /// Открываем текстовый фаил для записи
+    if (inputFile == NULL) /// Если не получилось открыть фаил
+    {
+        printf("Ошибка открытия файла");
+    }
+    else /// Иначе
+    {
+        fputs(inputStr, inputFile); /// Записываем строку в файл
+        fclose(inputFile); /// Сохраняем и закрываем файл
+    }
+    //==================================================
+    /// Открываем файл и записываем строку из файла в пееременную строку
+    inputFile = fopen ("inputFile.txt", "rt"); /// Открываем текстовый фаил для чтения
+    if (inputFile == NULL) /// Если не получилось открыть фаил
+    {
+        printf("Ошибка открытия файла");
+    }
+    else /// Иначе
+    {
+        fgets(outputStr, 100, inputFile); /// Записываем из файла строку
+        fclose(inputFile); /// Сохраняем и закрываем файл
+    }
+    //==================================================
+    /// Посимвольно записываем английские буквы в файл
+    fillStrTZero (variableStr, 30); /// Обнуляем переменную строку
+    //==================================================
+    /// Открываем и закрываем файл, чтобы его очистить
+    outputFileEnglishWords = fopen ("outputFileEnglishWords.txt", "wt"); /// Открываем текстовый фаил для записи
+    fclose(outputFileEnglishWords); /// Сохраняем и закрываем файл
+    //==================================================
+    outputFileEnglishWords = fopen ("outputFileEnglishWords.txt", "at"); /// Открываем текстовый фаил для записи
+    if (outputFileEnglishWords == NULL) /// Если не получилось открыть фаил
+    {
+        printf("Ошибка открытия файла");
+    }
+    else /// Иначе
+    {
+        for (int i = 0; outputStr[i] != '\0'; i++)
+        {
+            if (outputStr[i] == ' ')
+            {
+                for (int j = 0; variableStr[j] != '\0'; j++)
+                {
+                    for (int k = 0; englishWords[k] != '\0'; k++)
+                    {
+                        if (variableStr[j] == englishWords[k])
+                        {
+                            fputc(variableStr[j], outputFileEnglishWords); /// Записываем символ в файл
+                            booleanForSpase = 1; /// true
+                        }
+                    }
+                }
+                if (booleanForSpase)
+                    fputc(' ', outputFileEnglishWords); /// Записываем символ в файл
+                fillStrTZero (variableStr, 30); /// Обнуляем переменную строку
+                counter = 0; /// Обнуляем индекс переменной строки
+                booleanForSpase = 0; /// false
+            }
+            else
+            {
+                variableStr[counter] = outputStr[i];
+                counter++;
+            }
+        }
+        fclose(outputFileEnglishWords); /// Сохраняем и закрываем файл
+    }
+    //==================================================
+    /// Посимвольно записываем русские буквы в файл
+    fillStrTZero (variableStr, 30); /// Обнуляем переменную строку
+    //==================================================
+    /// Открываем и закрываем файл, чтобы его очистить
+    outputFileRussianWords = fopen ("outputFileRussianWords.txt", "wt"); /// Открываем текстовый фаил для записи
+    fclose(outputFileRussianWords); /// Сохраняем и закрываем файл
+    //==================================================
+    outputFileRussianWords = fopen ("outputFileRussianWords.txt", "at"); /// Открываем текстовый фаил для записи
+    if (outputFileRussianWords == NULL) /// Если не получилось открыть фаил
+    {
+        printf("Ошибка открытия файла");
+    }
+    else /// Иначе
+    {
+        for (int i = 0; outputStr[i] != '\0'; i++)
+        {
+            if (outputStr[i] == ' ')
+            {
+                for (int j = 0; variableStr[j] != '\0'; j++)
+                {
+                    for (int k = 0; russianWords[k] != '\0'; k++)
+                    {
+                        if (variableStr[j] == russianWords[k])
+                        {
+                            fputc(variableStr[j], outputFileRussianWords); /// Записываем символ в файл
+                            booleanForSpase = 1; /// true
+                        }
+                    }
+                }
+                if (booleanForSpase)
+                    fputc(' ', outputFileRussianWords); /// Записываем символ в файл
+                fillStrTZero (variableStr, 30); /// Обнуляем переменную строку
+                counter = 0; /// Обнуляем индекс переменной строки
+                booleanForSpase = 0; /// false
+            }
+            else
+            {
+                variableStr[counter] = outputStr[i];
+                counter++;
+            }
+        }
+        fclose(outputFileRussianWords); /// Сохраняем и закрываем файл
+    }
+    //==================================================
+    return 0;
+ }

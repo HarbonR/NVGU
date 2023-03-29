@@ -1,0 +1,551 @@
+#include <stdio.h> /// Библиотека ввода-вывода
+#include <locale.h> /// Бибилиотека для локализации
+
+//====================================================================================================
+
+typedef struct
+{
+    char name[20]; /// Название конфет
+    int cost; /// Стоимость конфет за кг
+    int expirationDate; /// Срок годности в месяцах
+} typeCandy;
+
+/// Функция принимает размер динамического массива. Выделяет память под динамический массив и возвращает ссылку на этот массив.
+typeCandy* allocateMemoryDynamicArrayCandy (int size)
+{
+    typeCandy *variablePointer = (typeCandy*) malloc(size * sizeof(typeCandy));
+    return variablePointer;
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Заполняет динамический массив запросив у пользователя данные. Ничего не возвращает
+void fillDynamicArrayCandy (typeCandy *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf("Введите название %d конфет: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].name);
+        printf("Введите стоимость %d конфет в кг: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].cost);
+        printf("Введите срок годности %d конфет в месяцах: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].expirationDate);
+    }
+}
+
+/// Функция принимает указатель на динамический массив, его размер и пределы стоимости. Выводит в консоль конфеты в пределах стоимости. Ничего не возвращает.
+void limitCostCandy (typeCandy *inputDynamicArray, int sizeDynamicArray, int limitFrom, int limitTo)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        if (limitFrom <= inputDynamicArray[i].cost && inputDynamicArray[i].cost <= limitTo)
+            printf("Название: %s \t Стоимость: %d \t Cрок годности: %d\n", inputDynamicArray[i].name, inputDynamicArray[i].cost, inputDynamicArray[i].expirationDate);
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Выводит в консоль конфеты с наибольшим сроком годности. Ничего не возвращает.
+void maxExpirationDateCandy (typeCandy *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    int maxExpirationDate = inputDynamicArray[0].expirationDate;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        if (maxExpirationDate <= inputDynamicArray[i].expirationDate)
+            maxExpirationDate = inputDynamicArray[i].expirationDate;
+    }
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        if (maxExpirationDate == inputDynamicArray[i].expirationDate)
+            printf("Название: %s \t Стоимость: %d \t Cрок годности: %d\n", inputDynamicArray[i].name, inputDynamicArray[i].cost, inputDynamicArray[i].expirationDate);
+    }
+
+}
+
+//====================================================================================================
+
+typedef struct
+{
+    char secondName[30]; /// Фамилия
+    char stydentClass; /// Класс
+    char subject[30]; /// Предмет
+    int place; /// Место
+} typeStydent;
+
+/// Функция принимает размер динамического массива. Выделяет память под динамический массив и возвращает ссылку на этот массив.
+typeStydent* allocateMemoryDynamicArrayStydent (int size)
+{
+    typeStydent *variablePointer = (typeStydent*) malloc(size * sizeof(typeStydent));
+    return variablePointer;
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Заполняет динамический массив запросив у пользователя данные. Ничего не возвращает
+void fillDynamicArrayStydent (typeStydent *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf("Введите фамилию %d ученика: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].secondName);
+        printf("Введите класс %d ученика: ", i + 1);
+        scanf(" %c", &inputDynamicArray[i].stydentClass); /// Если не поставить пробел из буфера в переменную записывается этот пробел
+        printf("Введите предмет %d ученика: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].subject);
+        printf("Введите место %d ученика: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].place);
+    }
+}
+
+/// Функция принимает указатель на динамический массив, его размер и место. Выводит в консоль информацию о студентах занявших определенное место. Ничего не возвращает.
+void printStydentCertainPlace (typeStydent *inputDynamicArray, int sizeDynamicArray, int place)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        if (inputDynamicArray[i].place == place)
+            printf("Фамилия: %s \tКласс: %c \tПредмет: %s \tМесто: %d\n", inputDynamicArray[i].secondName, inputDynamicArray[i].stydentClass, inputDynamicArray[i].subject, inputDynamicArray[i].place);
+    }
+}
+
+//====================================================================================================
+
+typedef struct
+{
+    char secondName[30]; /// Фамилия. [1]
+    int growth; /// Рост. [2]
+    int role; /// Амплуа [3] ("attack" - нападающий [1][2], "deender" - защитник [3][1], "center" - центровой [2][3]).
+    int number; /// Номер. [4]
+} typeBasketballTeam;
+
+/// Функция принимает размер динамического массива. Выделяет память под динамический массив и возвращает ссылку на этот массив.
+typeBasketballTeam* allocateMemoryDynamicArrayBasketballTeam (int size)
+{
+    typeBasketballTeam *variablePointer = (typeBasketballTeam*) malloc(size * sizeof(typeBasketballTeam));
+    return variablePointer;
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Заполняет динамический массив запросив у пользователя данные. Ничего не возвращает
+void fillDynamicArrayBasketballTeam (typeBasketballTeam *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf("Введите фамилию %d игрока: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].secondName);
+        printf("Введите рост %d игрока: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].growth);
+        printf("Введите амплуа(1 - Защитник; 2 - Нападающий; 3- Центровой) %d игрока: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].role);
+        printf("Введите номер %d игрока: ", i + 1);
+        scanf("%d", &inputDynamicArray[i].number);
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Выводит массив в консоль. Ничего не возвращает.
+void printDynamicArrayBasketballTeam (typeBasketballTeam *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf(" \t %d \t %s \t \t %d ", i + 1, inputDynamicArray[i].secondName, inputDynamicArray[i].growth);
+        switch (inputDynamicArray[i].role)
+        {
+            case 1:
+                printf(" \t \t Защитник "); break;
+            case 2:
+                printf(" \t \t Нападающий "); break;
+            case 3:
+                printf(" \t \t Центровой "); break;
+        }
+        printf(" \t %d \n", inputDynamicArray[i].number);
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Сортирует массив. Ничего не возвращает.
+void sortDynamicArrayBasketballTeam (typeBasketballTeam *inputDynamicArray, int sizeDynamicArray)
+{
+    int i, j, k, variableSort;
+    typeBasketballTeam variableForTypeBasketballTeam;
+    printf("Введите № колонки для сортировки: ");
+    scanf("%d", &variableSort);
+    switch (variableSort)
+    {
+        case 1:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по росту
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeBasketballTeam = inputDynamicArray[i];
+                    for (k = 0; variableForTypeBasketballTeam.secondName[k] != '\0' || inputDynamicArray[j].secondName[k] != '\0'; k++)
+                    {
+                        if (variableForTypeBasketballTeam.secondName[k] < inputDynamicArray[j].secondName[k])
+                            break;
+                        else if (variableForTypeBasketballTeam.secondName[k] > inputDynamicArray[j].secondName[k])
+                        {
+                            inputDynamicArray[i] = inputDynamicArray[j];
+                            inputDynamicArray[j] = variableForTypeBasketballTeam;
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по росту
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeBasketballTeam = inputDynamicArray[i];
+                    if(variableForTypeBasketballTeam.growth > inputDynamicArray[j].growth)
+                    {
+                        inputDynamicArray[i] = inputDynamicArray[j];
+                        inputDynamicArray[j] = variableForTypeBasketballTeam;
+                    }
+                }
+            }
+            break;
+        case 3:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по амплуа
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeBasketballTeam = inputDynamicArray[i];
+                    if(variableForTypeBasketballTeam.role > inputDynamicArray[j].role)
+                    {
+                        inputDynamicArray[i] = inputDynamicArray[j];
+                        inputDynamicArray[j] = variableForTypeBasketballTeam;
+                    }
+                }
+            }
+            break;
+        case 4:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по номеру
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeBasketballTeam = inputDynamicArray[i];
+                    if(variableForTypeBasketballTeam.number > inputDynamicArray[j].number)
+                    {
+                        inputDynamicArray[i] = inputDynamicArray[j];
+                        inputDynamicArray[j] = variableForTypeBasketballTeam;
+                    }
+                }
+            }
+            break;
+    }
+
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Изменяет массив. Ничего не возвращает.
+void changeDynamicArrayBasketballTeam (typeBasketballTeam *inputDynamicArray, int sizeDynamicArray)
+{
+    int i, variableNumber;
+    printf("Введите номер строки для изменения: ");
+    scanf("%d", &variableNumber);
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        if (i + 1 == variableNumber)
+        {
+            printf("Введите фамилию %d игрока: ", i + 1);
+            scanf("%s", &inputDynamicArray[i].secondName);
+            printf("Введите рост %d игрока: ", i + 1);
+            scanf("%d", &inputDynamicArray[i].growth);
+            printf("Введите амплуа(Защитник - 1; Нападающий - 2; Центровой - 3) %d игрока: ", i + 1);
+            scanf("%d", &inputDynamicArray[i].role);
+            printf("Введите номер %d игрока: ", i + 1);
+            scanf("%d", &inputDynamicArray[i].number);
+        }
+    }
+}
+
+//====================================================================================================
+
+typedef struct
+{
+    char secondName[30]; /// Фамилия.
+    char courseName[30]; /// Название курса.
+    char courseDuration[5]; /// Длительность курса в месяцах.
+} typeCourses;
+
+/// Функция принимает размер динамического массива. Выделяет память под динамический массив и возвращает ссылку на этот массив.
+typeCourses* allocateMemoryDynamicArrayCourses (int size)
+{
+    typeCourses *variablePointer = (typeCourses*) malloc(size * sizeof(typeCourses));
+    return variablePointer;
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Заполняет динамический массив запросив у пользователя данные. Ничего не возвращает
+void fillDynamicArrayCourses (typeCourses *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf("Введите фамилию %d посетителя: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].secondName);
+        printf("Введите название курса %d посетителя: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].courseName);
+        printf("Введите длительность курса в месяцах %d посетителя: ", i + 1);
+        scanf("%s", &inputDynamicArray[i].courseDuration);
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Выводит массив в консоль. Ничего не возвращает.
+void printDynamicArrayCourses (typeCourses *inputDynamicArray, int sizeDynamicArray)
+{
+    int i;
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+        printf("\t %d \t %s \t \t %s \t \t \t %s\n", i + 1, inputDynamicArray[i].secondName, inputDynamicArray[i].courseName, inputDynamicArray[i].courseDuration);
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Сортирует массив. Ничего не возвращает.
+void sortDynamicArrayCourses (typeCourses *inputDynamicArray, int sizeDynamicArray)
+{
+    int i, j, k, variableSort;
+    typeCourses variableForTypeCourses;
+    printf("Введите № колонки для сортировки: ");
+    scanf("%d", &variableSort);
+    switch (variableSort)
+    {
+        case 1:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по фамилии.
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeCourses = inputDynamicArray[i];
+                    for (k = 0; variableForTypeCourses.secondName[k] != '\0' || inputDynamicArray[j].secondName[k] != '\0'; k++)
+                    {
+                        if (variableForTypeCourses.secondName[k] < inputDynamicArray[j].secondName[k])
+                            break;
+                        else if (variableForTypeCourses.secondName[k] > inputDynamicArray[j].secondName[k])
+                        {
+                            inputDynamicArray[i] = inputDynamicArray[j];
+                            inputDynamicArray[j] = variableForTypeCourses;
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по название курса.
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeCourses = inputDynamicArray[i];
+                    for (k = 0; variableForTypeCourses.courseName[k] != '\0' || inputDynamicArray[j].courseName[k] != '\0'; k++)
+                    {
+                        if (variableForTypeCourses.courseName[k] < inputDynamicArray[j].courseName[k])
+                            break;
+                        else if (variableForTypeCourses.courseName[k] > inputDynamicArray[j].courseName[k])
+                        {
+                            inputDynamicArray[i] = inputDynamicArray[j];
+                            inputDynamicArray[j] = variableForTypeCourses;
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+        case 3:
+            for (i = 0; i < sizeDynamicArray - 1; i++) /// Сортировка по длительность курса.
+            {
+                for (j = i + 1; j < sizeDynamicArray; j++)
+                {
+                    variableForTypeCourses = inputDynamicArray[i];
+                    for (k = 0; variableForTypeCourses.courseDuration[k] != '\0' || inputDynamicArray[j].courseDuration[k] != '\0'; k++)
+                    {
+                        if (variableForTypeCourses.courseDuration[k] < inputDynamicArray[j].courseDuration[k])
+                            break;
+                        else if (variableForTypeCourses.courseDuration[k] > inputDynamicArray[j].courseDuration[k])
+                        {
+                            inputDynamicArray[i] = inputDynamicArray[j];
+                            inputDynamicArray[j] = variableForTypeCourses;
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+    }
+}
+
+/// Функция принимает указатель на динамический массив и его размер. Находит нужное значение в массиве. Ничего не возвращает.
+void searchInDynamicArrayCourses (typeCourses *inputDynamicArray, int sizeDynamicArray)
+{
+    int i, j;
+    int variableBoolen = 1; /// true
+    int variableError = 1; /// true
+    char variableForSearch[30];
+    printf("Поиск: ");
+    scanf("%s", &variableForSearch);
+    for (i = 0; i < sizeDynamicArray; i++)
+    {
+//====================================================================================================
+        for (j = 0; inputDynamicArray[i].secondName[j] != '\0' || variableForSearch[j] != '\0'; j++)
+        {
+            if (inputDynamicArray[i].secondName[j] != variableForSearch[j])
+            {
+                variableBoolen = 0; /// false
+                break;
+            }
+        }
+        if (variableBoolen == 1)
+        {
+            printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+            printf("\t %d \t %s \t \t %s \t \t \t %s\n", i + 1, inputDynamicArray[i].secondName, inputDynamicArray[i].courseName, inputDynamicArray[i].courseDuration);
+            variableError = 0; /// false
+            break;
+        }
+        variableBoolen = 1; /// true
+//====================================================================================================
+        for (j = 0; inputDynamicArray[i].courseName[j] != '\0' || variableForSearch[j] != '\0'; j++)
+        {
+            if (inputDynamicArray[i].courseName[j] != variableForSearch[j])
+            {
+                variableBoolen = 0; /// false
+                break;
+            }
+        }
+        if (variableBoolen == 1)
+        {
+            printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+            printf("\t %d \t %s \t \t %s \t \t \t %s\n", i + 1, inputDynamicArray[i].secondName, inputDynamicArray[i].courseName, inputDynamicArray[i].courseDuration);
+            variableError = 0; /// false
+            break;
+        }
+        variableBoolen = 1; /// true
+//====================================================================================================
+        for (j = 0; inputDynamicArray[i].courseDuration[j] != '\0' || variableForSearch[j] != '\0'; j++)
+        {
+            if (inputDynamicArray[i].courseDuration[j] != variableForSearch[j])
+            {
+                variableBoolen = 0; /// false
+                break;
+            }
+        }
+        if (variableBoolen == 1)
+        {
+            printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+            printf("\t %d \t %s \t \t %s \t \t \t %s\n", i + 1, inputDynamicArray[i].secondName, inputDynamicArray[i].courseName, inputDynamicArray[i].courseDuration);
+            variableError = 0; /// false
+            break;
+        }
+        variableBoolen = 1; /// true
+//====================================================================================================
+    }
+    if (variableError == 1)
+        printf("Строка не найдена\n");
+}
+
+//====================================================================================================
+main()
+{
+    setlocale(LC_ALL, "Rus"); /// Локализуем русский язык
+//====================================================================================================
+    int number, limitFrom, limitTo;
+    printf("Введите количество записей: ");
+    scanf("%d", &number);
+    typeCandy *assortiment = allocateMemoryDynamicArrayCandy(number); /// Выделяем память под динамический массив.
+    fillDynamicArrayCandy(assortiment, number);
+    printf("Введите предел стоимости:\nОт:");
+    scanf("%d", &limitFrom);
+    printf("До: ");
+    scanf("%d", &limitTo);
+    limitCostCandy(assortiment, number, limitFrom, limitTo);
+    printf("Конфеты с наибольшим сроком годности:\n");
+    maxExpirationDateCandy(assortiment, number);
+    free(assortiment); /// Освобождаем память.
+    assortiment = NULL; /// Освобождаем ссылку.
+    system("pause"); /// Консольная команда. Ставит консоль на паузу.
+    system("cls"); /// Консольная команда. Отчищает консоль.
+//====================================================================================================
+    int place; /// Место
+    printf("Введите количество записей: ");
+    scanf("%d", &number);
+    typeStydent *stydents = allocateMemoryDynamicArrayStydent(number); /// Выделяем память под динамический массив
+    fillDynamicArrayStydent(stydents, number);
+    printf("Введите место: ");
+    scanf("%d", &place);
+    printStydentCertainPlace(stydents, number, place);
+    free(stydents); /// Освобождаем память.
+    stydents = NULL; /// Освобождаем ссылку.
+    system("pause"); /// Консольная команда. Ставит консоль на паузу.
+    system("cls"); /// Консольная команда. Отчищает консоль.
+//====================================================================================================
+    char variableForSelect; /// Переменная для выбора
+    int variableForExit = 0; /// Переменная для выхода
+    printf("Введите количество записей: ");
+    scanf("%d", &number);
+    typeBasketballTeam *basketballTeam = allocateMemoryDynamicArrayBasketballTeam(number); /// Выделяем память под динамический массив
+    fillDynamicArrayBasketballTeam(basketballTeam, number); /// Заполняет массив
+    system("pause"); /// Консольная команда. Ставит консоль на паузу.
+    system("cls"); /// Консольная команда. Отчищает консоль.
+    printf(" \t №: \t Фамилия: \t Рост: \t \t Амплуа: \t Номер:\n");
+    printDynamicArrayBasketballTeam(basketballTeam, number); /// Выводит массив
+    while (variableForExit != 1)
+    {
+        printf("Выберите действие:\n1. Сортировать\n2. Изменить\n3. Выйти\n");
+        variableForSelect = getch();
+        switch (variableForSelect)
+        {
+            case '1':
+                sortDynamicArrayBasketballTeam(basketballTeam, number); /// Функция для сортировки
+                system("cls"); /// Консольная команда. Отчищает консоль.
+                printf(" \t №: \t Фамилия: \t Рост: \t \t Амплуа: \t Номер:\n");
+                printDynamicArrayBasketballTeam(basketballTeam, number); /// Выводит массив
+                break;
+            case '2':
+                changeDynamicArrayBasketballTeam(basketballTeam, number); /// Изменяет массив
+                system("cls"); /// Консольная команда. Отчищает консоль.
+                printf(" \t №: \t Фамилия: \t Рост: \t \t Амплуа: \t Номер:\n");
+                printDynamicArrayBasketballTeam(basketballTeam, number); /// Выводит массив
+                break;
+            case '3':
+                variableForExit = 1;
+                break;
+        }
+    }
+    free(basketballTeam); /// Освобождаем память.
+    basketballTeam = NULL; /// Освобождаем ссылку.
+    system("pause"); /// Консольная команда. Ставит консоль на паузу.
+    system("cls"); /// Консольная команда. Отчищает консоль.
+//====================================================================================================
+    variableForExit = 0;
+    printf("Введите количество записей: ");
+    scanf("%d", &number);
+    typeCourses *courses = allocateMemoryDynamicArrayCourses(number); /// Выделяем память под динамический массив
+    fillDynamicArrayCourses(courses, number); /// Заполняет массив
+    system("pause"); /// Консольная команда. Ставит консоль на паузу.
+    system("cls"); /// Консольная команда. Отчищает консоль.
+    printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+    printDynamicArrayCourses(courses, number); /// Выводит массив
+    while (variableForExit != 1)
+    {
+        printf("Выберите действие:\n1. Сортировать\n2. Поиск\n3. Выйти\n");
+        variableForSelect = getch();
+        switch (variableForSelect)
+        {
+            case '1':
+                sortDynamicArrayCourses(courses, number); /// Функция для сортировки
+                system("cls"); /// Консольная команда. Отчищает консоль.
+                printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+                printDynamicArrayCourses(courses, number); /// Выводит массив
+                break;
+            case '2':
+                searchInDynamicArrayCourses(courses, number); /// Функция для поиска
+                system("pause"); /// Консольная команда. Ставит консоль на паузу.
+                system("cls"); /// Консольная команда. Отчищает консоль.
+                printf(" \t №: \t Фамилия: \t Название курса: \t Длительность курса:\n");
+                printDynamicArrayCourses(courses, number); /// Выводит массив
+                break;
+            case '3':
+                variableForExit = 1;
+                break;
+        }
+    }
+    free(courses); /// Освобождаем память.
+    courses = NULL; /// Освобождаем ссылку.
+//====================================================================================================
+    return 0;
+}

@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <graphics.h>
+
+void nvgu (int x, int y)
+{
+    //==================================================
+    /// Н
+    moveto (x, y);
+    lineto (x, y - 50);
+    moveto (x, y - 25);
+    lineto (x + 25, y - 25);
+    moveto (x + 25, y);
+    lineto (x + 25, y - 50);
+    //==================================================
+    /// В
+    moveto (x + 40, y);
+    lineto (x + 40, y - 50);
+    arc (x + 40, y-40, 270, 90, 10);
+    arc (x + 40, y-15, 270, 90, 15);
+    //==================================================
+    /// Г
+    moveto (x + 65, y);
+    lineto (x + 65, y - 50);
+    lineto (x + 80, y - 50);
+    //==================================================
+    /// У
+    moveto (x + 90, y);
+    lineto (x + 110, y - 50);
+    moveto (x + 90, y - 50);
+    lineto (x + 100, y - 25);
+    //==================================================
+}
+
+
+void moveTriangle (int startX, int startY, int stepX, int stepY, int countStepsX, int countStepsY)
+{
+    int i, j;
+    for (i = 0, j = 0; abs(i) < countStepsX || abs (j) < countStepsY; i+=stepX, j+=stepY)
+    {
+        setcolor(BLACK); /// Установить красный цвет
+        nvgu(startX + i, startY + j);
+        if (kbhit())
+            break; /// Если будет нажата любая клавиша, то произойдет выход из цикла (kbhit() возвращает ненулевое значение, если была нажата любая клавиша ).
+        delay(10); /// Подождать 1 миллисекунду
+        setcolor(WHITE); /// Установить белый цвет.
+        nvgu(startX + i, startY + j);
+    }
+}
+
+int main()
+{
+    initwindow(800,600); /// открыть окно для графики размером 800 на 600 пикселей
+    setcolor(WHITE); /// установить белый цвет
+    floodfill(1,1,GREEN); /// закрасить все белым цветом, пока не встретится зеленый, а он не встретится
+    while (!kbhit())   /// цикл будет продолжаться, пока не будет нажата какая-либо клавиша
+    {
+        moveTriangle(650,100,0,+1,0,400);
+        moveTriangle(650,500,-1,-1,0,400);
+        moveTriangle(250,100,0,+1,0,400);
+        moveTriangle(250,500,+1,-1,0,200);
+
+    }
+    getch();
+    closegraph(); /// Закрыть окно с графикой
+    return 0;
+}

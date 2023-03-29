@@ -1,0 +1,40 @@
+9 Лабораторная работа 1 часть 13 задание
+13. Нарисовать на экране 5 заполненных ромбов разного цвета и стиля заполнения.
+//====================================================================================================
+#include <stdio.h> /// Библиотека ввода-вывода Си
+#include <stdlib.h> /// Стандартная библиотека
+#include <graphics.h> /// Библиотека с графикой
+
+/// Функция рисует заполненный ромб
+void printRhombus (int x, int y, int lineStyle, int lineColor, int styleFill, int colorFill)
+{
+    floodfill(1,1,WHITE); /// Заполняет ограниченную область (x, y, цвет границы области)
+    int points[8]; /// Массив точек
+    points[0] = x;
+    points[1] = y;
+    points[2] = x + 30;
+    points[3] = y - 40;
+    points[4] = x + 60;
+    points[5] = y;
+    points[6] = x + 30;
+    points[7] = y + 40;
+    setcolor(lineColor); /// Установить цвет
+    setlinestyle(lineStyle,0,3); /// Установка ширины и стиля линии (стиль линии, паттерн, толщина линии)
+    setfillstyle(styleFill, colorFill); /// Устанавливает цвет и шаблон заполнения (шаблон, цвет)
+    fillpoly(4,points); /// Рисует и закрашивает многоугольник (количество точек, массив координат)
+}
+
+int main()
+{
+    initwindow(800,600); /// Открыть окно для графики размером 800 на 600 пикселей
+    printRhombus (100, 100, 0, CYAN, 1, YELLOW);
+    printRhombus (180, 100, 1, BLACK, 2, MAGENTA);
+    printRhombus (260, 100, 2, GREEN, 3, LIGHTBLUE);
+    printRhombus (340, 100, 3, RED, 4, LIGHTGREEN);
+    printRhombus (420, 100, 0, DARKGRAY, 5, LIGHTMAGENTA);
+    getch(); /// Функция ожидает ввода символа без отображения в консоли (Пауза)
+    closegraph(); /// Закрыть окно с графикой
+    return 0;
+}
+//====================================================================================================
+http://mycpp.ru/cpp/scpp/cppd_graphics.h.htm - Сайт со всеми функциями для графики

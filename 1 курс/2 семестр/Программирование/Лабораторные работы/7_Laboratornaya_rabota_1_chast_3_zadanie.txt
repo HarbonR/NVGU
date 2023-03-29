@@ -1,0 +1,99 @@
+7 Лабораторная работа 1 часть 3 задание
+3. Создать массив, элементами которого являются структуры – список учеников класса (хранятся фамилия, оценки по 3 
+предметам). Вывести средний балл учеников класса по предмету, введенному пользователем. Вывести учеников, 
+имеющих средний балл выше среднего в классе.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <windows.h> /// Библиотека для работы с системными функциями
+#include <math.h> /// Библиотека для работы с математическими функциями
+
+/// Объявляем структуру
+typedef struct
+{
+    char firstName[30]; /// Фамилия
+    int russian; /// Русский
+    int maths; /// Математика
+    int english; /// Английский
+}typeClassStudents;
+
+/// Функция возвращает средний балл учеников класса по предмету
+int gradePointAverage (typeClassStudents *classStudents, int numberClassStudents, int subject)
+{
+    int sum = 0;
+    switch (subject)
+    {
+    case 1:
+        for (int i = 0; i < numberClassStudents; i++)
+            sum += classStudents[i].russian;
+        break;
+    case 2:
+        for (int i = 0; i < numberClassStudents; i++)
+            sum += classStudents[i].maths;
+        break;
+    case 3:
+        for (int i = 0; i < numberClassStudents; i++)
+            sum += classStudents[i].english;
+        break;
+    }
+    return round((float)sum / numberClassStudents); /// Функция round округляет значение до ближайшего
+}
+
+/// Функция выводит в консоль информацию об учениках, имеющих средний балл выше среднего в классе
+void printStudents (typeClassStudents *classStudents, int numberClassStudents)
+{
+    double gradePointAverage = 0; /// Средний балл
+    int booleanForNoStudents = 1; /// Переменная для вывода "Таких учеников нет". (0 - false, 1 - true)
+    /// Пробигаемся по массиву структур и вычисляем средний балл учеников в классе
+    for (int i = 0; i < numberClassStudents; i++)
+    {
+        gradePointAverage += classStudents[i].russian;
+        gradePointAverage += classStudents[i].maths;
+        gradePointAverage += classStudents[i].english;
+    }
+    gradePointAverage /= numberClassStudents * 3; /// Вычисляем средний балл учеников в классе
+    /// Пробигаемся по массиву структур и выводим в консоль учеников средний балл которых выше среднего в классе
+    for (int i = 0; i < numberClassStudents; i++)
+    {
+        if ((double)(classStudents[i].russian + classStudents[i].maths + classStudents[i].english)/3 > gradePointAverage)
+        {
+            booleanForNoStudents = 0; /// false
+            printf("\n\t%s\t\t%d\t\t%d\t\t%d", classStudents[i].firstName, classStudents[i].russian, classStudents[i].maths, classStudents[i].english);
+        }
+    }
+    if (booleanForNoStudents == 1)
+        printf ("\n\t\t\t!!!Таких учеников нет!!!");
+}
+
+int main()
+{
+    system ("chcp 1251"); /// Устанавливаем кодовую страницу 1251 (Локализуем русский язык) (Устанавливаем кодировку windows-1251)
+    typeClassStudents *classStudents = NULL; /// Объявляем переменную типа указатель
+    int numberClassStudents; /// Количество учеников класса
+    int subject; /// Предмет
+    printf ("Введите количество учеников класса: ");
+    scanf ("%d", &numberClassStudents);
+    classStudents = (typeClassStudents*)malloc(numberClassStudents * sizeof(typeClassStudents)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную classStudents
+    /// Пробигаемся по массиву запрашиваем и заполняем массив структур
+    for (int i = 0; i < numberClassStudents; i++)
+    {
+        printf ("Введите фамилию %d ученика: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (classStudents[i].firstName); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите оценку по русскому языку %d ученика: ", i + 1);
+        scanf ("%d", &classStudents[i].russian);
+        printf ("Введите оценку по математике %d ученика: ", i + 1);
+        scanf ("%d", &classStudents[i].maths);
+        printf ("Введите оценку по английскому языку %d ученика: ", i + 1);
+        scanf ("%d", &classStudents[i].english);
+    }
+    printf ("Введите номер предмета:\n1.Русский язык\n2.Математика\n3.Английский язык\n");
+    scanf ("%d", &subject);
+    printf ("Средний балл учеников класса по предмету = %d", gradePointAverage(classStudents, numberClassStudents, subject));
+    printf ("\nУченики средний балл, которых выше среднего в классе:");
+    printf ("\n\tФамилия:\tРусский язык:\tМатематика:\tАнглийский язык:");
+    printStudents (classStudents, numberClassStudents);
+    free (classStudents); /// Освобождаем динамическую память
+    classStudents = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

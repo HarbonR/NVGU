@@ -1,0 +1,74 @@
+1 часть 1 задание. 
+Дан массив. Удалить из него нули и после каждого числа, оканчивающего на 5, вставить 1.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+#include <time.h> /// Библиотека для работы со временем
+
+int main()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    srand (time(NULL)); /// Ключ для рандомайзера
+    int *dynamicArrayNumbers = NULL; /// Объявляем переменную типа указатель на область в памяти типа int
+    int lengthDynamicArrayNumbers; /// Переменная для хранения длины динамического массива чисел
+    int *changedDynamicArrayNumbers = NULL; /// Объявляем переменную типа указатель на область в памяти типа int
+    int lengthChangedDynamicArrayNumbers = 0; /// Переменная для хранения длины изменённого динамического массива чисел
+    int j = 0; /// Переменная для заполнения изменённого массива
+    printf ("Введите длинну массива: ");
+    scanf ("%d", &lengthDynamicArrayNumbers);
+    dynamicArrayNumbers = (int*)malloc(lengthDynamicArrayNumbers * sizeof(int)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную dynamicArrayNumbers
+    /// Заполняем массив рандомными числами
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        dynamicArrayNumbers[i] = rand() % 50;
+    }
+    /// Выводим в консоль массив с рандомными числами
+    printf ("Массив рандомных чисел:\t");
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        printf ("%d\t", dynamicArrayNumbers[i]);
+    }
+    printf ("\n");
+    /// Пробигаемся по массиву и подсчитываем длинну изменённого массива
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        if (dynamicArrayNumbers[i] == 0)
+            continue; /// Если 0 прервать (пропустить) текущую итерацию цикла и приступить к следующей итерации
+        else if (dynamicArrayNumbers[i] % 10 == 5)
+            lengthChangedDynamicArrayNumbers += 2;
+        else
+            lengthChangedDynamicArrayNumbers++;
+    }
+    changedDynamicArrayNumbers = (int*)malloc(lengthChangedDynamicArrayNumbers * sizeof(int)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную changedDynamicArrayNumbers
+    /// Заполняем изменённый массив
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        if (dynamicArrayNumbers[i] == 0)
+            continue; /// Если 0 прервать (пропустить) текущую итерацию цикла и приступить к следующей итерации
+        else if (dynamicArrayNumbers[i] % 10 == 5)
+        {
+            changedDynamicArrayNumbers[j] = dynamicArrayNumbers[i];
+            j++;
+            changedDynamicArrayNumbers[j] = 1;
+            j++;
+        }
+        else
+        {
+            changedDynamicArrayNumbers[j] = dynamicArrayNumbers[i];
+            j++;
+        }
+    }
+    free (dynamicArrayNumbers); /// Освобождаем динамическую память
+    dynamicArrayNumbers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    printf ("Изменённый массив:\t");
+    /// Выводим в консоль изменёный массив
+    for (int i = 0; i < lengthChangedDynamicArrayNumbers; i++)
+    {
+        printf ("%d\t", changedDynamicArrayNumbers[i]);
+    }
+    free (changedDynamicArrayNumbers); /// Освобождаем динамическую память
+    changedDynamicArrayNumbers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

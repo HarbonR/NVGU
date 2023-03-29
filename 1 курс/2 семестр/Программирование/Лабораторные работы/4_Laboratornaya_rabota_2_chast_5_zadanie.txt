@@ -1,0 +1,62 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+typedef struct
+{
+    int i;
+    int j;
+} typeIndex;
+
+int main()
+{
+    setlocale(LC_ALL, "Rus"); /// Локализуем русский язык
+    srand(time(NULL)); /// Создаём ключ для рандомайзера
+    int **arrayRandomNumbers; /// Создаём ссылку на динамический массив
+    int width, height;
+    typeIndex start, last;
+    int summ = 0;
+    cout << "Введите высоту, ширину двухмерного массива: ";
+    cin >> height >> width;
+    arrayRandomNumbers = new int* [height];
+    for (int i = 0; i < height; i++)
+        arrayRandomNumbers[i] = new int [width];
+
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
+            arrayRandomNumbers[i][j] = rand() % 9 + 1;
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+            cout << arrayRandomNumbers[i][j] << " ";
+        cout << endl;
+    }
+    cout << "Введите индексы начала i, j: ";
+    cin >> start.i >> start.j;
+    cout << "Введите индексы конец i, j: ";
+    cin >> last.i >> last.j;
+    int i = start.i;
+    int j = start.j;
+    cout << "Сумма элементов массива: ";
+    while (i != last.i || j != last.j)
+    {
+        cout << arrayRandomNumbers[i][j] << " ";
+        summ += arrayRandomNumbers[i][j];
+        j++;
+        if(j == width)
+        {
+            i++;
+            j = 0;
+        }
+    }
+    cout << arrayRandomNumbers[i][j] << " ";
+    summ += arrayRandomNumbers[i][j];
+    for (int i = 0; i < height; i++)
+        delete [] arrayRandomNumbers[i];
+    delete [] arrayRandomNumbers;
+    cout << "= " << summ;
+    return 0;
+}

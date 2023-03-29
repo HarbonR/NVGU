@@ -1,0 +1,82 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Rus"); /// Локализуем русский язык
+    srand(time(NULL)); /// Создаём ключ для рандомайзера
+    int **arrayRandomNumbers; /// Создаём ссылку на динамический массив
+    int width, height;
+    int variableSumm;
+    int summ;
+    int counterForDynamicArray = 0;
+    int *arraySumm;
+    int k = 0;
+    cout << "Введите высоту, ширину двухмерного массива: ";
+    cin >> height >> width;
+    arrayRandomNumbers = new int* [height];
+
+    for (int i = 0; i < height; i++)
+        arrayRandomNumbers[i] = new int [width];
+
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
+            arrayRandomNumbers[i][j] = rand() % 9 + 1;
+
+    for (int i = 0; i < height; i++)
+    {
+        variableSumm = 0;
+        for (int j = 0; j < width; j++)
+        {
+            cout << arrayRandomNumbers[i][j] << " ";
+            variableSumm += arrayRandomNumbers[i][j];
+        }
+        cout << "Сумма = " << variableSumm <<endl;
+    }
+    cout << "Введите сумму = ";
+    cin >> summ;
+
+    for (int i = 0; i < height; i++)
+    {
+        variableSumm = 0;
+        for (int j = 0; j < width; j++)
+        {
+            variableSumm += arrayRandomNumbers[i][j];
+        }
+        if (summ < variableSumm)
+            counterForDynamicArray++;
+    }
+
+
+    arraySumm = new int [counterForDynamicArray];
+
+    for (int i = 0; i < height; i++)
+    {
+        variableSumm = 0;
+        for (int j = 0; j < width; j++)
+        {
+            variableSumm += arrayRandomNumbers[i][j];
+        }
+        if (summ < variableSumm)
+        {
+            arraySumm[k] = i;
+            k++;
+        }
+    }
+
+    for (int i = 0; i < counterForDynamicArray; i++)
+    {
+        cout << arraySumm[i] + 1 << "Строчка" << endl;
+    }
+
+
+
+    for (int i = 0; i < height; i++)
+        delete [] arrayRandomNumbers[i];
+    delete [] arrayRandomNumbers;
+    delete [] arraySumm;
+    return 0;
+}

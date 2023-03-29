@@ -1,0 +1,76 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+
+typedef struct
+{
+    char firstName[30]; /// Фамилия
+    char tool[30]; /// Инструмент.
+    int yearOfStudy; /// Год обучения
+}typeStydents;
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    int numberStydents; /// Количество студентов
+    typeStydents *students = NULL; /// Переменная указатель на структуру typeStydents
+    char searchTool[30]; /// Переменная "искать инструмент"
+    int boolForSearchTool; /// Булевая переменная для поиска инструмента
+    int boolForPrintNoTool = 1; /// Булевая переменная для вывода нет искомого инструмента (false)
+    int lengthSearchTool = 0; /// Длина слова искомого инструмента
+    int lengthTool; /// Длина слова инструмента
+    printf("Введите количество студентов: ");
+    scanf("%d", &numberStydents);
+    students = (typeStydents*)malloc(numberStydents * sizeof(typeStydents)); /// Выделяем динамическую память размером numberStydents тип данных typeStydents и присваиваем ссылку на динамическую память переменной указатель stydents
+    for (int i = 0; i < numberStydents; i++)
+    {
+        printf("Введите Фамилию %d ученика: ", i + 1);
+        scanf("%s", &students[i].firstName);
+        printf("Введите инструмент %d ученика: ", i + 1);
+        scanf("%s", &students[i].tool);
+        printf("Введите год обучения %d ученика: ", i + 1);
+        scanf("%d", &students[i].yearOfStudy);
+    }
+    printf("Введите инструмент: ");
+    scanf("%s", &searchTool);
+    /// Определяем длинну искомого слова
+    for (int i = 0; searchTool[i] != '\0'; i++)
+    {
+        lengthSearchTool++;
+    }
+    /// Пробегаемся по массиву структур
+    for (int i = 0; i < numberStydents; i++)
+    {
+        boolForSearchTool = 0; /// Обнуляем булевую переменную (true)
+        lengthTool = 0; /// Обнуляем длинну слова инструмента
+        /// Определяем длинну каждого инструмента в массиве структур
+        for (int j = 0; students[i].tool[j] != '\0'; j++)
+        {
+            lengthTool++;
+        }
+        if (lengthSearchTool == lengthTool)
+        {
+            /// Определяем одинаковые слова или нет
+            for (int k = 0; k < lengthSearchTool; k++)
+            {
+                if (searchTool[k] != students[i].tool[k]) /// Если символы не одинаковые
+                {
+                    boolForSearchTool = 1; /// Присваиваем булевой переменной false
+                    break; /// Выходим из цикла
+                }
+            }
+        }
+        else
+            boolForSearchTool = 1; /// Присваиваем булевой переменной false
+        if (boolForSearchTool == 0) /// Если слова одинаковые
+        {
+            printf("Фамилия: %s\tИнструмент: %s\tГод обучения: %d", students[i].firstName, students[i].tool, students[i].yearOfStudy); /// Выводим информацию по ученику
+            boolForPrintNoTool = 0; /// true
+        }
+    }
+    if (boolForPrintNoTool == 1)
+        printf("Нет такого инструмента");
+    free(students); /// Оствобождаем выделенную динамическую память
+    students = NULL; /// Обнуляем переменную указатель
+    return 0;
+}

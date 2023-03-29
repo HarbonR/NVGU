@@ -1,0 +1,225 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <conio.h> /// Библиотека функций ввода-вывода
+#include <locale.h> /// Библиотека для локализации языка
+
+typedef struct
+{
+    char author[30]; /// Автор
+    char title[30]; /// Название
+    char whoTook[30]; /// Кто взял
+    char when[30]; /// Когда
+}typeBooks;
+
+/// Функция выводит книги в консоль
+void printBooks (typeBooks *inputBooks, int numberBooks)
+{
+    printf ("\tАвтор\tНазвание\tКто взял\tКогда\n");
+    for (int i = 0; i < numberBooks; i++)
+    {
+        printf ("%d\t%s\t%s\t\t%s\t\t%s\n", i + 1, inputBooks[i].author, inputBooks[i].title, inputBooks[i].whoTook, inputBooks[i].when);
+    }
+}
+
+/// Функция сортирует книги по автору
+void sortBooksByAuthor (typeBooks *inputBooks, int numberBooks)
+{
+    typeBooks variableBook; /// Переменная для сортировки
+    for (int i = 0; i < numberBooks - 1; i++)
+    {
+        for (int j = i + 1; j < numberBooks; j++)
+        {
+            for (int k = 0; inputBooks[i].author[k] != '\0'; k++)
+            {
+                if (inputBooks[j].author[k] < inputBooks[i].author[k])
+                {
+                    variableBook = inputBooks[i];
+                    inputBooks[i] = inputBooks[j];
+                    inputBooks[j] = variableBook;
+                }
+                else if (inputBooks[j].author[k] == inputBooks[i].author[k])
+                    continue; /// Продолжить цикл
+                else
+                    break; /// Выйти из цикла
+            }
+        }
+    }
+}
+
+/// Функция поиска по книгам
+void bookSearch (typeBooks *inputBooks, int numberBooks, char *inputSearchData)
+{
+    int numberChar; /// Количество символов
+    int numberCharInInputSearchData = 0; /// Количество символов в строке inputSearchData
+    int booleanForSearch; /// Булевая переменная для поиска
+    int booleanForNoData = 1; /// Булевая переменная для "нет данных"
+    /// Считает кол-во символов в переменной строке inputSearchData
+    for (int i = 0; inputSearchData[i] != '\0'; i++)
+        numberCharInInputSearchData++;
+    for (int i = 0; i < numberBooks; i++)
+    {
+        //=======================================================
+        numberChar = 0; /// Обнуляем переменную "количество символов"
+        booleanForSearch = 0; /// Обнуляем булевую переменную для поиска
+        /// Считает кол-во символов в переменной строке
+        for (int j = 0; inputBooks[i].author[j] != '\0'; j++)
+            numberChar++;
+        /// Если количество символов равны проверяет одинаковые слова или нет
+        if (numberChar == numberCharInInputSearchData)
+        {
+            for (int k = 0; k < numberChar; k++)
+            {
+                if (inputBooks[i].author[k] != inputSearchData[k])
+                {
+                    booleanForSearch = 1; /// Присваиваем значение false
+                    break; /// Выход из цикла
+                }
+            }
+            if (booleanForSearch == 0)
+            {
+                printf ("\tАвтор: %s\tНазвание: %s\tКто взял: %s\tКогда: %s\n", inputBooks[i].author, inputBooks[i].title, inputBooks[i].whoTook, inputBooks[i].when);
+                booleanForNoData = 0;
+            }
+        }
+        else
+            continue; /// Продолжить
+        //=======================================================
+        numberChar = 0; /// Обнуляем переменную "количество символов"
+        booleanForSearch = 0; /// Обнуляем булевую переменную для поиска
+        /// Считает кол-во символов в переменной строке
+        for (int j = 0; inputBooks[i].title[j] != '\0'; j++)
+            numberChar++;
+        /// Если количество символов равны проверяет одинаковые слова или нет
+        if (numberChar == numberCharInInputSearchData)
+        {
+            for (int k = 0; k < numberChar; k++)
+            {
+                if (inputBooks[i].title[k] != inputSearchData[k])
+                {
+                    booleanForSearch = 1; /// Присваиваем значение false
+                    break; /// Выход из цикла
+                }
+            }
+            if (booleanForSearch == 0)
+            {
+                printf ("\tАвтор: %s\tНазвание: %s\tКто взял: %s\tКогда: %s\n", inputBooks[i].author, inputBooks[i].title, inputBooks[i].whoTook, inputBooks[i].when);
+                booleanForNoData = 0;
+            }
+        }
+        else
+            continue; /// Продолжить
+        //=======================================================
+        numberChar = 0; /// Обнуляем переменную "количество символов"
+        booleanForSearch = 0; /// Обнуляем булевую переменную для поиска
+        /// Считает кол-во символов в переменной строке
+        for (int j = 0; inputBooks[i].when[j] != '\0'; j++)
+            numberChar++;
+        /// Если количество символов равны проверяет одинаковые слова или нет
+        if (numberChar == numberCharInInputSearchData)
+        {
+            for (int k = 0; k < numberChar; k++)
+            {
+                if (inputBooks[i].when[k] != inputSearchData[k])
+                {
+                    booleanForSearch = 1; /// Присваиваем значение false
+                    break; /// Выход из цикла
+                }
+            }
+            if (booleanForSearch == 0)
+            {
+                printf ("\tАвтор: %s\tНазвание: %s\tКто взял: %s\tКогда: %s\n", inputBooks[i].author, inputBooks[i].title, inputBooks[i].whoTook, inputBooks[i].when);
+                booleanForNoData = 0;
+            }
+        }
+        else
+            continue; /// Продолжить
+        //=======================================================
+        numberChar = 0; /// Обнуляем переменную "количество символов"
+        booleanForSearch = 0; /// Обнуляем булевую переменную для поиска
+        /// Считает кол-во символов в переменной строке
+        for (int j = 0; inputBooks[i].whoTook[j] != '\0'; j++)
+            numberChar++;
+        /// Если количество символов равны проверяет одинаковые слова или нет
+        if (numberChar == numberCharInInputSearchData)
+        {
+            for (int k = 0; k < numberChar; k++)
+            {
+                if (inputBooks[i].whoTook[k] != inputSearchData[k])
+                {
+                    booleanForSearch = 1; /// Присваиваем значение false
+                    break; /// Выход из цикла
+                }
+            }
+            if (booleanForSearch == 0)
+            {
+                printf ("\tАвтор: %s\tНазвание: %s\tКто взял: %s\tКогда: %s\n", inputBooks[i].author, inputBooks[i].title, inputBooks[i].whoTook, inputBooks[i].when);
+                booleanForNoData = 0;
+            }
+        }
+        else
+            continue; /// Продолжить
+        //=======================================================
+    }
+    if (booleanForNoData == 1)
+        printf ("Строка не найдена\n");
+}
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    typeBooks *books = NULL; /// Переменная указатель на структуру typeBooks
+    int numberBooks; /// Количество книг
+    char menu; /// Переменная для меню
+    char searchData[30]; /// Переменная для поиска
+    printf("Введите количество книг: ");
+    scanf("%d", &numberBooks);
+    books = (typeBooks*)malloc(numberBooks * sizeof(typeBooks)); /// Выделяем динамическую память размером numberBooks тип данных typeBooks и присваиваем ссылку на динамическую память переменной указатель books
+    /// Заполняем динамический массив структур данными
+    for (int i = 0; i < numberBooks; i++)
+    {
+        printf ("Введите атора %d книги: ", i + 1);
+        scanf ("%s", books[i].author);
+        printf ("Введите название %d книги: ", i + 1);
+        scanf ("%s", books[i].title);
+        printf ("Введите кто взял %d книгу: ", i + 1);
+        scanf ("%s", books[i].whoTook);
+        printf ("Введите когда взяли %d книгу: ", i + 1);
+        scanf ("%s", books[i].when);
+    }
+    system("pause");
+    while (1)
+    {
+        system ("cls"); /// Очистить консоль
+        printf ("1. Сортировка по автору\n");
+        printf ("2. Искать\n");
+        printf ("3. Показать все книги\n");
+        printf("4. Выход\n");
+        menu = getch(); /// Присваивает нажатый символ переменной без отображения символа на экране
+        if (menu == '1')
+        {
+            system("cls"); /// Очистить консоль
+            sortBooksByAuthor (books, numberBooks); /// Функция сортирует книги по автору
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '2')
+        {
+            system("cls"); /// Очистить консоль
+            printf("Искать: ");
+            scanf("%s", &searchData);
+            bookSearch (books, numberBooks, searchData); /// Функция поиска по книгам
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '3')
+        {
+            system("cls"); /// Очистить консоль
+            printBooks (books, numberBooks);
+            system("pause"); /// Консоль ожидает нажатия
+        }
+        else if (menu == '4')
+            break; /// Выйти из цикла
+
+    }
+    free(books); /// Освобождаем выделенную динамическую память
+    books = NULL; /// Обнуляем переменную указатель
+    return 0;
+}

@@ -1,0 +1,87 @@
+7 Лабораторная работа 1 часть 13 задание
+13. Создать массив, элементами которого являются структуры – список клиентов автосервиса (фамилия, марка 
+автомобиля, дата обслуживания). Вывести информацию по клиентам с определенной маркой автомобиля.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <windows.h> /// Библиотека для работы с системными функциями
+
+/// Объявляем структуру 
+typedef struct
+{
+    char firstName[30]; /// Фамилия
+    char carModel[20]; /// Марка автомобиля
+    char serviceDate[15]; /// Дата обслуживания
+}typeCarServiceClient;
+
+/// Функция для поиска и вывода информации в консоль по клиенту с определенной маркой автомобиля
+void fSearchCarModel (typeCarServiceClient *carServiceClient, int numberCarServiceClient, char *carModel)
+{
+    int lengthCarModel = 0; /// Длина переменной carModel
+    int variableLength; /// Переменная длина переменной carModel
+    int booleanForSearchCarModel; /// Переменная для поиска марки автомобиля (1 - true 0 - false)
+    int booleanForNoSearchCarModel = 1; /// Переменная для вывода "Строка не найдена" (1 - true 0 - false)
+    /// Определяем количество символов в строке переменной carModel
+    for (int i = 0; carModel[i] != '\0'; i++) /// Пока не конец строки выполнять. '\0' - Тернирующий ноль (Обозначает конец строки)
+        lengthCarModel++; /// Инкрементим длину переменной carModel (Увеличиваем значение переменной на 1)
+    /// Пробегаемся по массиву структур типа typeCarServiceClient
+    for (int i = 0; i < numberCarServiceClient; i++)
+    {
+        variableLength = 0; /// Обнуляем переменную
+        booleanForSearchCarModel = 1; /// Переменные carModel и carServiceClient[i].carModel равны
+        /// Определяем количество символов в строке переменной carModel структуры carServiceClient
+        for (int j = 0; carServiceClient[i].carModel[j] != '\0'; j++) /// Пока не конец строки выполнять. '\0' - Тернирующий ноль (Обозначает конец строки)
+            variableLength++; /// Инкрементим длину переменной carModel (Увеличиваем значение переменной на 1)
+        if (lengthCarModel != variableLength) /// Если длины не равны
+            continue; /// Переход к следующей итерации цикла
+        else if (lengthCarModel == variableLength) /// Иначе если длины равны, выполнить
+        {
+            for (int k = 0; k < lengthCarModel; k++)
+            {
+                if (carServiceClient[i].carModel[k] != carModel[k])
+                {
+                    booleanForSearchCarModel = 0; /// Переменные не равны
+                    break; /// Выйти из цикла for (k)
+                }
+            }
+        }
+        if (booleanForSearchCarModel == 1) /// Если переменные carModel и carServiceClient[i].carModel равны
+        {
+            printf ("\t%s\t\t%s\t\t%s", carServiceClient[i].firstName, carServiceClient[i].carModel, carServiceClient[i].serviceDate);
+            booleanForNoSearchCarModel = 0;
+        }
+    }
+    if (booleanForNoSearchCarModel == 1)
+        printf ("\t\t!!!Строка не найдена!!!");
+}
+
+int main()
+{
+    system ("chcp 1251"); /// Устанавливаем кодовую страницу 1251 (Локализуем русский язык) (Устанавливаем кодировку windows-1251)
+    typeCarServiceClient *carServiceClient = NULL; /// Объявляем переменную типа указатель
+    int numberCarServiceClient; /// Количество клиентов автосервиса
+    char searchCarModel[20]; /// Переменная строка для поиска марки автомобиля
+    printf ("Введите количество клиентов автосервиса: ");
+    scanf ("%d", &numberCarServiceClient);
+    carServiceClient = (typeCarServiceClient*)malloc(numberCarServiceClient * sizeof(typeCarServiceClient)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную carServiceClient
+    /// Запрашиваем и заполняем массив структур типа typeCarServiceClient
+    for (int i = 0; i < numberCarServiceClient; i++)
+    {
+        printf ("Введите фамилию %d клиента автосервиса: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (carServiceClient[i].firstName); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите марку автомобиля %d клиента автосервиса: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (carServiceClient[i].carModel); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите дату обслуживания автомобиля %d клиента автосервиса: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (carServiceClient[i].serviceDate); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+    }
+    printf ("Введите марку автомобиля: ");
+    gets (searchCarModel); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+    printf ("\tФамилия:\tМарка:\t\tДата обслуживания:\n");
+    fSearchCarModel (carServiceClient, numberCarServiceClient, searchCarModel);
+    free (carServiceClient); /// Освобождаем динамическую память
+    carServiceClient = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

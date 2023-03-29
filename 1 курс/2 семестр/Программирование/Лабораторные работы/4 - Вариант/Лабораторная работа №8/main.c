@@ -1,0 +1,476 @@
+#include <stdio.h> /// Библиотека ввода-вывода.
+#include <stdlib.h> /// Стандартная библиотека.
+#include <locale.h> /// Библиотека для локализации языков.
+#include <conio.h> /// Библиотека функций для работы с вводом, выводом.
+#include <string.h> /// Библиотека для работы со строками.
+#include <time.h> /// Библиотека для работы со временем.
+
+//====================================================================================================
+/// Функции для задания 4 из 1 части.
+
+/// Функция принимает строку и количество. Заполняет строку тернирующими нулями. Ничего не возвращает.
+void fillStringZeros (char *inputString, int lengthString)
+{
+    int i;
+    for (i = 0; i < lengthString; i++)
+        inputString[i] = '\0';
+}
+
+/// Функция принимает строку. Проверяет есть ли в конце строки пробел. Если нет добавляет. Ничего не возвращает.
+void spaseInEndString (char *inputString)
+{
+    int i;
+    int counter = 0;
+    for (i = 0; inputString[i] != '\0'; i++)
+        counter++;
+    if (inputString[counter-1] != ' ')
+    {
+        inputString[counter] = ' ';
+        inputString[counter+1] = '\0';
+    }
+}
+
+/// Функция принимает строку и некоторые буквы. Выводит в консоль слово с наибольшим количеством некоторых букв. Ничего не возвращает.
+void printStringWithMostLetters (char *inputString, char *inputLetters)
+{
+    int i,j,k;
+    char variableString[40]; /// Переменная строка.
+    int counterForVariableString = 0; /// Счетчик для переменной строка.
+    fillStringZeros(variableString, 40); /// обнуляем строку.
+    char stringWithMaxNumberLetters[40] = "Нет таких букв";
+    int counterMaxLetters = 0; /// Счетчик для слова с максимальным количеством некоторых букв.
+    int counterLetters = 0; /// Счетчик для подсчета количества некоторых букв в слове.
+    for (i = 0; inputString[i] != '\0'; i++) /// Пока символ из массива под индексом i не будет равен тернирующему нулю выполнять
+    {
+        if (inputString[i] == ' ')
+        {
+            for(j = 0;  inputLetters[j] != '\n'; j++) /// Пока символ из массива некоторых букв под индексом i не будет равен переходу на новую строку выполнять
+            {
+                for (k = 0; k < counterForVariableString; k++)
+                {
+                    if (inputLetters[j] == variableString[k])
+                        counterLetters++;
+                }
+            }
+            if (counterLetters > counterMaxLetters)
+            {
+                counterMaxLetters = counterLetters;
+                strcpy(stringWithMaxNumberLetters, variableString); /// Копируем строку variableString в строку stringWithMaxNumberLetters.
+            }
+            counterLetters = 0; /// Обнуляем счетчик.
+            counterForVariableString = 0; /// Обнуляем счетчик.
+            fillStringZeros(variableString, 40); /// обнуляем строку.
+        }
+        else
+        {
+            variableString[counterForVariableString] = inputString[i];
+            counterForVariableString++;
+        }
+    }
+    printf("%s\n", stringWithMaxNumberLetters);
+}
+
+//====================================================================================================
+/// Функции для задания 14 часть 1.
+
+/// Функция принимает строку и заполняет её символами через один. Ничего не возвращает.
+void fillStingThroughOneCharacter (char *inputString)
+{
+    char variableString[256];
+    int i;
+    int j = 0;
+    int variableX = 1;
+    for (i = 0; inputString[i] != '\0'; i++)
+    {
+        if (variableX == 1)
+        {
+            variableString[j] = inputString[i];
+            j++;
+        }
+        variableX = (variableX + 1) % 2;
+    }
+    strcpy(inputString, variableString);
+}
+
+//====================================================================================================
+/// Функции для задания 4 часть 2.
+
+/// Функция принимает ссылку и число. Выделяет динамическую память. Возвращает ссылку на выделенную динамическую память.
+int* mallocDynamicArrayTypeInt (int numberElements)
+{
+    return (int*)malloc(numberElements * sizeof(int));
+}
+
+/// Функция принимает ссылку и число. Заполняет массив рандомными числами. Ничего не возвращает.
+void fillArrayRandomNumbers (int *inputArrayTypeInt, int numberElements)
+{
+    srand(time(NULL));
+    int i;
+    for (i = 0; i < numberElements; i++)
+        inputArrayTypeInt[i] = rand() % 18 + (-9);
+}
+
+/// Функция принимает ссылку и число. Выводит массив в консоль. Ничего не возвращает.
+void printArrayTypeInt (int *inputArrayTypeInt, int numberElements)
+{
+    int i;
+    for (i = 0; i < numberElements; i++)
+        printf("%d ", inputArrayTypeInt[i]);
+    printf("\n");
+}
+
+/// Функция принимает массив и количество элементов. Определяет количество противоположных элементов. Возвращает количество противоположных элементов * 2.
+int countOppositeNumbers (int *inputArrayTypeInt, int numberElements)
+{
+    int i,j;
+    int counter = 0;
+    for (i = 0; i < numberElements - 1; i++)
+    {
+        for (j = i+1; j < numberElements; j++)
+        {
+            if(inputArrayTypeInt[i] == (inputArrayTypeInt[j] * (-1)))
+            {
+                counter += 2;
+                break;
+            }
+        }
+    }
+    return counter;
+}
+
+/// Функция принимает массивы и количество элементов. Заполняет массив противоположными элементами. Ничего не возвращает.
+void oppositeNumbers (int *inputArrayTypeInt, int numberElementsInputArray, int *outputArrayTypeInt, int numberElementsOutputArray)
+{
+    int i,j;
+    int k = 0;
+    for (i = 0; i < numberElementsInputArray - 1; i++)
+    {
+        for (j = i+1; j < numberElementsInputArray; j++)
+        {
+            if(inputArrayTypeInt[i] == (inputArrayTypeInt[j] * (-1)))
+            {
+                outputArrayTypeInt[k] = inputArrayTypeInt[i];
+                k++;
+                outputArrayTypeInt[k] = inputArrayTypeInt[j];
+                k++;
+                break; /// Выходим из второго цикла.
+            }
+        }
+    }
+}
+
+//====================================================================================================
+/// Функции для задания 14 часть 2.
+
+/// Функция принимает ссылку и число. Заполняет массив рандомными числами. Ничего не возвращает.
+void fillArrayRandomNumbersFrom1To9 (int *inputArrayTypeInt, int numberElements)
+{
+    srand(time(NULL));
+    int i;
+    for (i = 0; i < numberElements; i++)
+        inputArrayTypeInt[i] = rand() % 8 + 1;
+}
+
+/// Функция принимает массив и количество элементов. Определяет количество не кратных элементов. Возвращает количество не кратных элементов.
+int countNotMultiples (int *inputArrayTypeInt, int numberElements, int multiples)
+{
+    int i;
+    int counter = 0;
+    for (i = 0; i < numberElements; i++)
+    {
+        if (inputArrayTypeInt[i] % multiples != 0)
+            counter++;
+    }
+    return counter;
+}
+
+///
+void notMultiples (int *inputArrayTypeInt, int numberElementsInputArray, int multiples, int *outputArrayTypeInt, int numberElementsOutputArray)
+{
+    int i;
+    int j = 0;
+    for (i = 0; i < numberElementsInputArray; i++)
+    {
+        if (inputArrayTypeInt[i] % multiples != 0)
+        {
+            outputArrayTypeInt[j] = inputArrayTypeInt[i];
+            j++;
+        }
+    }
+}
+
+//====================================================================================================
+
+int main()
+{
+    setlocale(LC_ALL, "Rus"); /// Локализуем русский язык.
+    //====================================================================================================
+    /// Переменные.
+    FILE *inputFile;
+    FILE *outputFile;
+    char string[256];
+    char someLetters[10];
+    char variableForMenu = '0';
+    int i; /// Переменная для циклов for
+    int *arrayRandomNumbers;
+    int variableNumber;
+    int *changedArrayRandomNumbers;
+    int variableNumberChangedArray = 0;
+    int multiples;
+    //====================================================================================================
+    while (variableForMenu != 'E')
+    {
+        printf("1. (Часть 1. Задание 4) Даны файл, содержащий текст, и некоторые буквы. Найти слово,\n");
+        printf("содержащее наибольшее количество указанных букв.\n");
+        printf("2. (Часть 1. Задание 14) Дан файл, содержащий текст. Переписать в другой файл этот текст через один символ\n");
+        printf("(т.е. если в файл записано «привет», то в другой нужно записать «пие»).\n");
+        printf("3. (Часть 2. Задание 4) Записать в файл N целых случайных чисел. Подсчитать количество пар противоположных чисел\n");
+        printf("среди компонентов этого файла (4 и - 4 – противоположные числа) и вывести их в другой файл.\n");
+        printf("4. (Часть 2. Задание 14) Записать в файл N натуральных случайных чисел. Получить в другом файле все компоненты файла,\n");
+        printf("кроме тех, которые кратны K.\n");
+        printf("E. Выход\n");
+        variableForMenu = getch();
+        system("cls");
+        //====================================================================================================
+        if (variableForMenu == '1')
+        {
+            while(variableForMenu != 'e')
+            {
+                printf("1. Перезаписать текст в файл\n");
+                printf("2. Считать текст из файла\n");
+                printf("e. Выход из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    inputFile = fopen ("partOneZ4InputText.txt", "wt"); /// Открываем текстовый файл для записи.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        printf("Введите текст: ");
+                        gets(string); /// Записывает строку с пробелами.
+                        fputs(string, inputFile); /// Записывает строку в файл.
+                        fclose(inputFile); /// Закрываем файл.
+                    }
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    inputFile = fopen ("partOneZ4InputText.txt", "rt"); /// Открываем текстовый файл для чтения.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        fgets(string, 256, inputFile); /// Записывает данные из файла в строку.
+                        fclose(inputFile); /// Закрываем файл.
+                        spaseInEndString(string); /// Проверяем есть ли в конце строки пробел. Если нет добовляется.
+                        printf("Введите буквы: ");
+                        for (i = 0; someLetters[i-1] != '\n'; i++)
+                        {
+                            scanf("%c", &someLetters[i]);
+                        }
+                        printf("Вся строка из файла: %s\n", string);
+                        printf("Слово с наибольшим количеством букв: ");
+                        printStringWithMostLetters(string, someLetters);
+                    }
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        else if (variableForMenu == '2')
+        {
+            while(variableForMenu != 'e')
+            {
+                printf("1. Перезаписать текст в файл\n");
+                printf("2. Считать текст из файла\n");
+                printf("e. Выход из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    inputFile = fopen ("partOneZ4InputText.txt", "wt"); /// Открываем текстовый файл для записи.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        printf("Введите текст: ");
+                        gets(string); /// Записывает строку с пробелами.
+                        fputs(string, inputFile); /// Записывает строку в файл.
+                        fclose(inputFile); /// Закрываем файл.
+                    }
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    inputFile = fopen ("partOneZ4InputText.txt", "rt"); /// Открываем текстовый файл для чтения.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        fgets(string, 256, inputFile); /// Записывает данные из файла в строку.
+                        fclose(inputFile); /// Закрываем файл.
+                        fillStingThroughOneCharacter(string);
+                    }
+                    outputFile = fopen ("partOneZ14OutputText.txt", "wt"); /// Открываем текстовый файл для записи.
+                    if (outputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        fputs(string, outputFile);
+                        fclose(outputFile); /// Закрываем файл.
+                        printf("%s\n", string);
+                    }
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        else if (variableForMenu == '3')
+        {
+            while(variableForMenu != 'e')
+            {
+                printf("1. Перезаписать числа в файл\n");
+                printf("2. Считать числа из файла\n");
+                printf("e. Выход из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    inputFile = fopen ("partTwoZ4InputNumbers.dat", "wb"); /// Открываем бинарный файл для записи.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        printf("Введите количество N целых случайных чисел: ");
+                        scanf("%d", &variableNumber);
+                        arrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumber);
+                        fillArrayRandomNumbers(arrayRandomNumbers, variableNumber);
+                        fwrite(arrayRandomNumbers, sizeof(int), variableNumber, inputFile); /// Записываем в файл значения из массива.
+                        fclose(inputFile); /// Закрываем файл.
+                        printf("Рандомные числа: ");
+                        for (i = 0; i < variableNumber; i++)
+                        {
+                            printf("%d ", arrayRandomNumbers[i]);
+                        }
+                        printf("\n");
+                        free(arrayRandomNumbers); /// Отчищаем память.
+                        arrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                    }
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    arrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumber); /// Выделяем память.
+                    inputFile = fopen ("partTwoZ4InputNumbers.dat", "rb"); /// Открываем бинарный файл для чтения.
+                    if (inputFile == NULL)
+                        printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        fread(arrayRandomNumbers, sizeof(int), variableNumber, inputFile); /// Записывает данные из файла в массив.
+                        fclose(inputFile); /// Закрываем файл.
+                        variableNumberChangedArray = countOppositeNumbers(arrayRandomNumbers, variableNumber);
+                        if (variableNumberChangedArray > 0)
+                        {
+                            changedArrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumberChangedArray); /// Выделяем память.
+                            oppositeNumbers(arrayRandomNumbers, variableNumber, changedArrayRandomNumbers, variableNumberChangedArray);
+                            outputFile = fopen ("partTwoZ4OutputNumbers.dat", "wb"); /// Открываем файл для записи.
+                            if (outputFile == NULL)
+                                printf("Ошибка, файл не открыт\n");
+                            else
+                            {
+                                fwrite (changedArrayRandomNumbers, sizeof(changedArrayRandomNumbers[0]), variableNumberChangedArray, outputFile);
+                                printArrayTypeInt(changedArrayRandomNumbers, variableNumberChangedArray);
+                                fclose(outputFile);
+                            }
+                            free(changedArrayRandomNumbers); /// Отчищаем память.
+                            changedArrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                        }
+                    }
+                    free(arrayRandomNumbers); /// Отчищаем память.
+                    arrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        else if (variableForMenu == '4')
+        {
+            while(variableForMenu != 'e')
+            {
+                printf("1. Перезаписать числа в файл\n");
+                printf("2. Считать числа из файла\n");
+                printf("e. Выход из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    inputFile = fopen ("partTwoZ4InputNumbers.dat", "wb"); /// Открываем бинарный файл для записи.
+                    if (inputFile == NULL)
+                    printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        printf("Введите количество N целых случайных чисел: ");
+                        scanf("%d", &variableNumber);
+                        arrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumber);
+                        fillArrayRandomNumbersFrom1To9(arrayRandomNumbers, variableNumber);
+                        fwrite(arrayRandomNumbers, sizeof(int), variableNumber, inputFile); /// Записываем в файл значения из массива.
+                        fclose(inputFile); /// Закрываем файл.
+                        printf("Рандомные числа: ");
+                        for (i = 0; i < variableNumber; i++)
+                        {
+                            printf("%d ", arrayRandomNumbers[i]);
+                        }
+                        printf("\n");
+                        free(arrayRandomNumbers); /// Отчищаем память.
+                        arrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                    }
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    arrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumber); /// Выделяем память.
+                    inputFile = fopen ("partTwoZ4InputNumbers.dat", "rb"); /// Открываем бинарный файл для чтения.
+                    if (inputFile == NULL)
+                        printf("Ошибка, файл не открыт\n");
+                    else
+                    {
+                        fread(arrayRandomNumbers, sizeof(int), variableNumber, inputFile); /// Записывает данные из файла в массив.
+                        fclose(inputFile); /// Закрываем файл.
+                        printf("Введите кратное: ");
+                        scanf("%d", &multiples);
+                        variableNumberChangedArray = countNotMultiples(arrayRandomNumbers, variableNumber, multiples);
+                        if (variableNumberChangedArray > 0)
+                        {
+                            changedArrayRandomNumbers = mallocDynamicArrayTypeInt(variableNumberChangedArray); /// Выделяем память.
+                            notMultiples(arrayRandomNumbers, variableNumber, multiples, changedArrayRandomNumbers, variableNumberChangedArray);
+                            outputFile = fopen ("partTwoZ4OutputNumbers.dat", "wb"); /// Открываем файл для записи.
+                            if (outputFile == NULL)
+                                printf("Ошибка, файл не открыт\n");
+                            else
+                            {
+                                fwrite (changedArrayRandomNumbers, sizeof(changedArrayRandomNumbers[0]), variableNumberChangedArray, outputFile);
+                                printArrayTypeInt(changedArrayRandomNumbers, variableNumberChangedArray);
+                                fclose(outputFile);
+                            }
+                            free(changedArrayRandomNumbers); /// Отчищаем память.
+                            changedArrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                        }
+                    }
+                    free(arrayRandomNumbers); /// Отчищаем память.
+                    arrayRandomNumbers = NULL; /// Отчищаем ссылку.
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+    }
+    return 0;
+}

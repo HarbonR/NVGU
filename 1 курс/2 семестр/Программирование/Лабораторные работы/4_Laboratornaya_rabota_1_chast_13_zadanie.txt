@@ -1,0 +1,51 @@
+1 часть 13 задание. 
+Задан массив действительных чисел. Определить, сколько раз меняется знак в данной последовательности чисел, 
+напечатать номера позиций, в которых происходит смена знака.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+#include <time.h> /// Библиотека для работы со временем
+
+int main()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    srand (time(NULL)); /// Ключ для рандомайзера
+    int *dynamicArrayNumbers = NULL; /// Объявляем переменную типа указатель на область в памяти типа int
+    int lengthDynamicArrayNumbers; /// Переменная для хранения длины динамического массива чисел
+    int numberChangeSign = 0; /// Количество изменений знака
+    printf ("Введите количество действительных чисел: ");
+    scanf ("%d", &lengthDynamicArrayNumbers);
+    dynamicArrayNumbers = (int*)malloc(lengthDynamicArrayNumbers * sizeof(int)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную dynamicArrayNumbers
+    /// Заполняем массив рандомными числами от - 10 до 10
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        dynamicArrayNumbers[i] = rand() % 20 - 10;
+    }
+    /// Выводим в консоль массив с рандомными числами
+    printf ("Массив рандомных чисел: ");
+    for (int i = 0; i < lengthDynamicArrayNumbers; i++)
+    {
+        printf ("%d ", dynamicArrayNumbers[i]);
+    }
+    printf ("\nНомер позиции смены знака: ");
+    /// Выводим в консоль позицию смены знака и считаем количество этих изменений
+    for (int i = 0; i < lengthDynamicArrayNumbers - 1; i++)
+    {
+        if (dynamicArrayNumbers[i] < 0 && dynamicArrayNumbers[i + 1] > 0)
+        {
+            printf ("%d ", i + 2);
+            numberChangeSign++; /// Инкриментим переменную (Увеличиваем переменную на 1)
+        }
+        else if (dynamicArrayNumbers[i] > 0 && dynamicArrayNumbers[i + 1] < 0)
+        {
+            printf ("%d ", i + 2);
+            numberChangeSign++; /// Инкриментим переменную (Увеличиваем переменную на 1)
+        }
+    }
+    printf ("\nКоличество изменений знака: %d", numberChangeSign);
+    free (dynamicArrayNumbers); /// Освобождаем динамическую память
+    dynamicArrayNumbers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

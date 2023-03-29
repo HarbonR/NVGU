@@ -1,0 +1,158 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <graphics.h>
+
+void diagram (void)
+{
+    setcolor(WHITE);
+    setlinestyle(0,0,3);
+    circle(120,150,100);
+    //==================================================
+    moveto (20,150);
+    lineto (220,150);
+    //==================================================
+    moveto (120,50);
+    lineto (120,250);
+    //==================================================
+    moveto (55,75);
+    lineto (185,220);
+    //==================================================
+    moveto (185,75);
+    lineto (55,220);
+    //==================================================
+    moveto (120,150);
+    lineto (85,240);
+    //==================================================
+    moveto (120,150);
+    lineto (85,60);
+    //==================================================
+    setfillstyle(9,GREEN);
+    floodfill (200,160,WHITE);
+    setfillstyle(9,CYAN);
+    floodfill (130,180,WHITE);
+    setfillstyle(9,RED);
+    floodfill (110,190,WHITE);
+    setfillstyle(9,MAGENTA);
+    floodfill (100,180,WHITE);
+    setfillstyle(9,BROWN);
+    floodfill (50,160,WHITE);
+    setfillstyle(9,LIGHTGRAY);
+    floodfill (50,140,WHITE);
+    setfillstyle(9,DARKGRAY);
+    floodfill (70,80,WHITE);
+    setfillstyle(9,LIGHTBLUE);
+    floodfill (70,80,WHITE);
+    setfillstyle(9,LIGHTGREEN);
+    floodfill (110,100,WHITE);
+    setfillstyle(9,LIGHTCYAN);
+    floodfill (130,100,WHITE);
+    setfillstyle(9,YELLOW);
+    floodfill (200,140,WHITE);
+}
+
+void diagramTwo (void)
+{
+    setcolor(WHITE);
+    setlinestyle(0,0,3);
+    circle(350,150,100);
+    //==================================================
+    moveto (250,150); /// -100
+    lineto (450,150); /// +100
+    //==================================================
+    moveto (350,50); /// ||
+    lineto (350,250); /// ||
+    //==================================================
+    moveto (285,75); /// -65
+    lineto (415,220); /// +65
+    //==================================================
+    moveto (415,75); /// +65
+    lineto (285,220); /// -65
+    //==================================================
+    moveto (350,150); /// ||
+    lineto (315,240); /// -35
+    //==================================================
+    moveto (350,150); /// ||
+    lineto (315,60); /// -35
+    //==================================================
+    setfillstyle(11,LIGHTMAGENTA);
+    floodfill (430,160,WHITE); /// +80
+    setfillstyle(11,LIGHTRED);
+    floodfill (360,180,WHITE); /// +10
+    setfillstyle(11,LIGHTGREEN);
+    floodfill (340,190,WHITE); /// -10
+    setfillstyle(11,LIGHTBLUE);
+    floodfill (330,180,WHITE); /// -20
+    setfillstyle(10,DARKGRAY);
+    floodfill (280,160,WHITE); /// -70
+    setfillstyle(11,MAGENTA);
+    floodfill (280,140,WHITE); /// -70
+    setfillstyle(9,RED);
+    floodfill (300,80,WHITE); /// -50
+    setfillstyle(11,CYAN);
+    floodfill (300,80,WHITE); /// -50
+    setfillstyle(11,GREEN);
+    floodfill (340,100,WHITE); /// -10
+    setfillstyle(9,BLUE);
+    floodfill (360,100,WHITE); /// +10
+    setfillstyle(11,BROWN);
+    floodfill (430,140,WHITE); /// +80
+}
+
+void diagramThree (void)
+{
+    setcolor(WHITE);
+    setlinestyle(0,0,3);
+    circle(580,150,100);
+    //==================================================
+    moveto (480,150); /// -100
+    lineto (680,150); /// +100
+    //==================================================
+    moveto (580,50); /// ||
+    lineto (580,250); /// ||
+    //==================================================
+    moveto (515,75); /// -65
+    lineto (645,220); /// +65
+    //==================================================
+    moveto (645,75); /// +65
+    lineto (515,220); /// -65
+    //==================================================
+    moveto (580,150); /// ||
+    lineto (545,240); /// -35
+    //==================================================
+    moveto (580,150); /// ||
+    lineto (545,60); /// -35
+    //==================================================
+    setfillstyle(9,BLUE);
+    floodfill (660,160,WHITE); /// +80
+    setfillstyle(9,CYAN);
+    floodfill (590,180,WHITE); /// +10
+    setfillstyle(9,MAGENTA);
+    floodfill (570,190,WHITE); /// -10
+    setfillstyle(9,LIGHTBLUE);
+    floodfill (560,180,WHITE); /// -20
+    setfillstyle(9,BROWN);
+    floodfill (510,160,WHITE); /// -70
+    setfillstyle(9,LIGHTGRAY);
+    floodfill (510,140,WHITE); /// -70
+    setfillstyle(9,LIGHTGREEN);
+    floodfill (530,80,WHITE); /// -50
+    setfillstyle(9,LIGHTRED);
+    floodfill (530,80,WHITE); /// -50
+    setfillstyle(9,YELLOW);
+    floodfill (570,100,WHITE); /// -10
+    setfillstyle(9,LIGHTMAGENTA);
+    floodfill (590,100,WHITE); /// +10
+    setfillstyle(9,LIGHTCYAN);
+    floodfill (660,140,WHITE); /// +80
+}
+
+int main()
+{
+    initwindow(800,600); /// открыть окно для графики размером 800 на 600 пикселей
+    diagram();
+    diagramTwo();
+    diagramThree ();
+    getch();
+    closegraph();
+    return 0;
+}

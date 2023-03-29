@@ -1,0 +1,85 @@
+2 часть 23 задание.
+23. Дан двумерный массив. Заменить первый нуль в каждой строке на количество нулей в этой строке.
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+#include <time.h> /// Библиотека для работы со временем
+
+int main()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    srand (time(NULL)); /// Ключ для рандомайзера
+    int **twoDimensionalDynamicArrayNumbers = NULL; /// Переменная указатель на указатель (Двумерный динамический массив чисел)
+    int height; /// Высота (Количество строк)
+    int width; /// Ширина (Количество столбцов)
+    int indexFirstZero; /// Индекс первого нуля в строке
+    int numberZeros; /// Количество нулей в строке
+    printf ("Введите количество строк: ");
+    scanf ("%d", &height);
+    printf("Введите количество столбцов: ");
+    scanf ("%d", &width);
+    twoDimensionalDynamicArrayNumbers = (int**)malloc(height * sizeof(int*)); /// Выделяем динамическую память для хранения ссылок на динамическую память
+    /// Пробигаемся по массиву ссылок и выделяем для каждой ссылки динамическую память
+    for (int i = 0; i < height; i++)
+    {
+        twoDimensionalDynamicArrayNumbers[i] = (int*)malloc(width * sizeof(int)); /// Выделяем динамическую память
+    }
+    /// Заполняем двумерный массив рандомными числами
+    for (int i = 0; i < height; i++) /// Пробигаемся по столбцам
+    {
+        for (int j = 0; j < width; j++) /// Пробигаемся по строкам
+        {
+            twoDimensionalDynamicArrayNumbers[i][j] = rand () % 2;
+        }
+    }
+    /// Выводим двухмерный массив в консоль
+    printf ("Двумерный массив:\n");
+    for (int i = 0; i < height; i++) /// Пробигаемся по столбцам
+    {
+        for (int j = 0; j < width; j++) /// Пробигаемся по строкам
+        {
+            printf ("%d ", twoDimensionalDynamicArrayNumbers[i][j]);
+        }
+        printf("\n");
+    }
+    /// Пробигаемся по двумерному массиву и заменяем первый ноль в каждой строке количеством нулей в этой строке
+    for (int i = 0; i < height; i++)
+    {
+        indexFirstZero = -1; /// Присваиваем индекс -1 т.к. его не существует.
+        numberZeros = 0; /// Обнуляем переменную
+        for (int j = 0; j < width; j++)
+        {
+            if (twoDimensionalDynamicArrayNumbers[i][j] == 0 && indexFirstZero == -1) /// При нахождении первого нуля индекс изменяется - это гарантирует, что повторного вхождения в эту ветвь в этой строке не будет
+            {
+                numberZeros++; /// Увеличиваем значение переменной на 1
+                indexFirstZero = j; /// Присваиваем переменной индекс первого нуля
+            }
+            else if (twoDimensionalDynamicArrayNumbers[i][j] == 0)
+                numberZeros++; /// Увеличиваем значение переменной на 1
+        }
+        if (indexFirstZero != -1) /// Если в строке есть нули
+        {
+            twoDimensionalDynamicArrayNumbers[i][indexFirstZero] = numberZeros; /// Заменяем первый ноль в строке на количество нулей в этой строке
+        }
+    }
+    /// Выводим двухмерный массив в консоль
+    printf ("Изменёный двумерный массив:\n");
+    for (int i = 0; i < height; i++) /// Пробигаемся по столбцам
+    {
+        for (int j = 0; j < width; j++) /// Пробигаемся по строкам
+        {
+            printf ("%d ", twoDimensionalDynamicArrayNumbers[i][j]);
+        }
+        printf("\n");
+    }
+    /// Пробигаемся по массиву ссылок и освобождаем память
+    for (int i = 0; i < height; i++)
+    {
+        free(twoDimensionalDynamicArrayNumbers[i]); /// Освобождаем динамическую память
+    }
+    free(twoDimensionalDynamicArrayNumbers); /// Освобождаем динамическую память
+    twoDimensionalDynamicArrayNumbers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

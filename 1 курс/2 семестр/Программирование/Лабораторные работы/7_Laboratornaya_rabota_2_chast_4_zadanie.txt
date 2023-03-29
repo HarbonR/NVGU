@@ -1,0 +1,132 @@
+7 Лабораторная работа 2 часть 4 задание
+4. Создать массив, элементами которого являются структуры – список стартовой пятерки баскетбольной команды 
+(фамилия, рост, амплуа (нападающий, защитник, центровой), номер). Создать функцию, сортирующую данную 
+структуру (например, по росту), и функцию для изменения игрока под определенным номером. Использовать эти 
+функции по назначению в программе (для вывода отсортированной информации и изменения нужной информации).
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <conio.h> /// Библиотека с функциями для работы с вводом-выводом
+#include <windows.h> /// Библиотека для работы с системными функциями
+
+/// Объявляем структуру
+typedef struct
+{
+    char firstName[30]; /// Фамилия
+    int growth; /// Рост
+    char role[20]; /// Амплуа (1 - нападающий, 2 - защитник, 3 - центровой)
+    int number; /// Номер
+}typeBasketballTeam;
+
+/// Функция выводит информацию о баскетбольной команде в консоль
+void printBasketballTeam (typeBasketballTeam *basketballTeam, int numberOfBasketballTeamPlayers)
+{
+    printf ("\tФамилия:\tРост:\t\tАмплуа:\t\tНомер:\n");
+    for (int i = 0; i < numberOfBasketballTeamPlayers; i++)
+        printf ("\t%s\t\t%d\t\t%s\t\t%d\n", basketballTeam[i].firstName, basketballTeam[i].growth, basketballTeam[i].role, basketballTeam[i].number);
+}
+
+/// Функция для сортировки по росту
+void sortedByHeight (typeBasketballTeam *basketballTeam, int numberOfBasketballTeamPlayers)
+{
+    typeBasketballTeam variableBasketballTeam; /// Создаём переменную для хранения временной структуры
+    /// Сортируем пузырьковым методом
+    for (int i = 0; i < numberOfBasketballTeamPlayers - 1; i++)
+    {
+        for (int j = i + 1; j < numberOfBasketballTeamPlayers; j++)
+        {
+            if (basketballTeam[i].growth > basketballTeam[j].growth) /// Если рост игрока под индексом i больше роста игрока под индексом j, поменять их местами
+            {
+                variableBasketballTeam = basketballTeam[i]; /// Структуру под индексом i помещаем в временную переменную
+                basketballTeam[i] = basketballTeam[j]; /// Структуре под индексом i присваиваем структуру под индексом j
+                basketballTeam[j] = variableBasketballTeam; /// Структуре под индексом j присваиваем временную переменную
+            }
+        }
+    }
+}
+
+/// Функция для изменения игрока под определенным номером
+void changeBasketballTeam (typeBasketballTeam *basketballTeam, int numberOfBasketballTeamPlayers)
+{
+    int numberForChange; /// Переменная для изменения игрока
+    int booleanForNoPlayer = 1; /// Переменная для вывода сообщения в консоль "Нет игрока под таким номером" (1 - true, 0 - false)
+    printf ("Введите номер игрока для изменения: ");
+    scanf ("%d", &numberForChange);
+    for (int i = 0; i < numberOfBasketballTeamPlayers; i++)
+    {
+        if (basketballTeam[i].number == numberForChange)
+        {
+            printf ("Введите фамилию %d игрока: ", i + 1);
+            fflush(stdin); /// Функция отчищает поток ввода
+            gets (basketballTeam[i].firstName); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+            printf ("Введите рост %d игрока: ", i + 1);
+            scanf ("%d", &basketballTeam[i].growth);
+            printf ("Введите аплуа %d игрока: ", i + 1);
+            fflush(stdin); /// Функция отчищает поток ввода
+            gets (basketballTeam[i].role); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+            printf ("Введите номер %d игрока: ", i + 1);
+            scanf ("%d", &basketballTeam[i].number);
+            booleanForNoPlayer = 0; /// false
+        }
+    }
+    if (booleanForNoPlayer == 1)
+        printf ("Нет игрока под таким номером\n");
+}
+
+int main()
+{
+    system ("chcp 1251"); /// Устанавливаем кодовую страницу 1251 (Локализуем русский язык) (Устанавливаем кодировку windows-1251)
+    typeBasketballTeam *basketballTeam = NULL; /// Объявляем переменную типа указатель
+    int numberOfBasketballTeamPlayers; /// Количество игроков баскетбольной команды
+    char variableForMenu = '-1'; /// Переменная для меню
+    printf ("Введите количество игроков баскетбольной команды: ");
+    scanf ("%d", &numberOfBasketballTeamPlayers);
+    basketballTeam = (typeBasketballTeam*)malloc(numberOfBasketballTeamPlayers * sizeof(typeBasketballTeam)); /// Выделяем динамическую память. Присваиваем ссылку на выделенную память в переменную basketballTeam
+    /// Заполняем массив структур
+    for (int i = 0; i < numberOfBasketballTeamPlayers; i++)
+    {
+        printf ("Введите фамилию %d игрока: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (basketballTeam[i].firstName); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите рост %d игрока: ", i + 1);
+        scanf ("%d", &basketballTeam[i].growth);
+        printf ("Введите аплуа %d игрока: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (basketballTeam[i].role); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите номер %d игрока: ", i + 1);
+        scanf ("%d", &basketballTeam[i].number);
+    }
+    system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+    system ("cls"); /// Функция для очистки консоли
+    /// Выполнять пока переменная variableForMenu не будет равна 4
+    while (variableForMenu != '4')
+    {
+        printf ("1. Сортировать по росту\n2. Изменить игрока\n3. Показать\n4. Выйти\n");
+        variableForMenu = _getch (); /// Функция _getch нужна для чтения одного символа с клавиатуры, этот символ на экран не выводится
+        system ("cls"); /// Функция для очистки консоли
+        switch (variableForMenu)
+        {
+        case '1' :
+            sortedByHeight (basketballTeam, numberOfBasketballTeamPlayers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '2' :
+            changeBasketballTeam(basketballTeam, numberOfBasketballTeamPlayers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '3' :
+            printBasketballTeam (basketballTeam, numberOfBasketballTeamPlayers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '4' :
+            variableForMenu = '4';
+            break;
+        }
+    }
+    free (basketballTeam); /// Освобождаем динамическую память
+    basketballTeam = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

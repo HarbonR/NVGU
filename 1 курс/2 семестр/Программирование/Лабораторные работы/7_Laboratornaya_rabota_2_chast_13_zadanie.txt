@@ -1,0 +1,237 @@
+7 Лабораторная работа 2 часть 13 задание
+13. Создать массив, элементами которого являются структуры – список журналов и газет (название, тираж, фамилия 
+главреда, год основания). Создать функцию, сортирующую данную структуру (например, по тиражу), и функцию для 
+поиска нужного значения в структуре. Использовать эти функции по назначению в программе (для вывода 
+отсортированной информации и поиска нужной информации).
+//====================================================================================================
+#include <stdio.h> /// Стандартная библиотека Си ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <conio.h> /// Библиотека с функциями для работы с вводом-выводом
+#include <windows.h> /// Библиотека для работы с системными функциями
+
+typedef struct
+{
+    char name[30]; /// Название
+    int printRun; /// Тираж
+    char firstName[30]; /// Фамилия главного редактора
+    int yearOfFoundation; /// Год основания
+}typeMagazinesAndNewspapers;
+
+/// Функция выводит в консоль информацию о всех журналах и газетах
+void printMagazinesAndNewspapers (typeMagazinesAndNewspapers *magazinesAndNewspapers, int numberMagazinesAndNewspapers)
+{
+    printf ("\tНазвание:\tТираж:\t\tФамилия ГР:\tГод основания\n");
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        printf ("\t%s\t\t%d\t\t%s\t\t%d\n", magazinesAndNewspapers[i].name, magazinesAndNewspapers[i].printRun, magazinesAndNewspapers[i].firstName, magazinesAndNewspapers[i].yearOfFoundation);
+    }
+}
+
+/// Функция сортирующую данную структуру по тиражу
+void sortMagazinesAndNewspapers (typeMagazinesAndNewspapers *magazinesAndNewspapers, int numberMagazinesAndNewspapers)
+{
+    typeMagazinesAndNewspapers variableMagazinesAndNewspapers; /// Создаём переменную для хранения временной структуры
+    /// Сортируем пузырьковым методом
+    for (int i = 0; i < numberMagazinesAndNewspapers - 1; i++)
+    {
+        for (int j = i + 1; j < numberMagazinesAndNewspapers; j++)
+        {
+            if (magazinesAndNewspapers[i].printRun > magazinesAndNewspapers[j].printRun) /// Если тираж под индексом i больше тиража под индексом j, поменять их местами
+            {
+                variableMagazinesAndNewspapers = magazinesAndNewspapers[i]; /// Структуру под индексом i помещаем в временную переменную
+                magazinesAndNewspapers[i] = magazinesAndNewspapers[j]; /// Структуре под индексом i присваиваем структуру под индексом j
+                magazinesAndNewspapers[j] = variableMagazinesAndNewspapers; /// Структуре под индексом j присваиваем временную переменную
+            }
+        }
+    }
+}
+
+/// Функция для поиска нужного значения в структуре
+void searchByStructsMagazinesAndNewspapers (typeMagazinesAndNewspapers *magazinesAndNewspapers, int numberMagazinesAndNewspapers)
+{
+    char variableSearch[30]; /// Переменная строка для поиска нужного значения в структуре
+    char intToString[30]; /// Переменная для хранения числа конвертированного в строку
+    int lengthVariableSearch = 0; /// Длинна переменной искать (количество символов)
+    int variableLength; /// Переменная длина (для хранения количество символов значения структуры)
+    int booleanForSearchValue; /// Переменная для поиска значения (1 - true, 0 - false)
+    int booleanValueNotFound = 1; /// Переменная для вывода сообщения в консоль "Значение не найдено" (1 - true, 0 - false)
+    printf ("Искать: ");
+    fflush(stdin); /// Функция отчищает поток ввода
+    gets (variableSearch); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+    /// Подсчитываем количество символов в переменной variableSearch
+    for (int i = 0; variableSearch[i] != '\0'; i++) /// Пока не конец строки выполнять '\0' - Тернирующий ноль (Означает конец строки)
+        lengthVariableSearch++; /// Инкриментим переменную (Увеличиваем значение переменной на 1)
+    printf ("\tНазвание:\tТираж:\t\tФамилия ГР:\tГод основания\n");
+    //==================================================
+    /// Ищем значение в названиях
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        variableLength = 0; /// Обнуляем переменную
+        booleanForSearchValue = 1; /// true
+        for (int j = 0; magazinesAndNewspapers[i].name[j] != '\0'; j++) /// Пока не конец строки выполнять '\0' - Тернирующий ноль (Означает конец строки)
+            variableLength++; /// Инкриментим переменную (Увеличиваем значение переменной на 1)
+        if (lengthVariableSearch != variableLength) /// Если длины не совподают
+            continue; /// Переход к следующей итерации цикла
+        else if (lengthVariableSearch == variableLength)
+        {
+            for (int j = 0; j < lengthVariableSearch; j++)
+            {
+                if (magazinesAndNewspapers[i].name[j] != variableSearch[j])
+                {
+                    booleanForSearchValue = 0; /// false
+                    break; /// Выйти из цикла (j)
+                }
+            }
+        }
+        if (booleanForSearchValue == 1)
+        {
+            printf ("\t%s\t\t%d\t\t%s\t\t%d\n", magazinesAndNewspapers[i].name, magazinesAndNewspapers[i].printRun, magazinesAndNewspapers[i].firstName, magazinesAndNewspapers[i].yearOfFoundation);
+            booleanValueNotFound = 0;
+        }
+    }
+    //==================================================
+    /// Ищем значение в тиражах
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        itoa (magazinesAndNewspapers[i].printRun, intToString, 10); /// Преобразует целое в строку. (int value, char *string, int radix)
+        variableLength = 0; /// Обнуляем переменную
+        booleanForSearchValue = 1; /// true
+        for (int j = 0; intToString[j] != '\0'; j++) /// Пока не конец строки выполнять '\0' - Тернирующий ноль (Означает конец строки)
+            variableLength++; /// Инкриментим переменную (Увеличиваем значение переменной на 1)
+        if (lengthVariableSearch != variableLength) /// Если длины не совподают
+            continue; /// Переход к следующей итерации цикла
+        else if (lengthVariableSearch == variableLength)
+        {
+            for (int j = 0; j < lengthVariableSearch; j++)
+            {
+                if (intToString[j] != variableSearch[j])
+                {
+                    booleanForSearchValue = 0; /// false
+                    break; /// Выйти из цикла (j)
+                }
+            }
+        }
+        if (booleanForSearchValue == 1)
+        {
+            printf ("\t%s\t\t%d\t\t%s\t\t%d\n", magazinesAndNewspapers[i].name, magazinesAndNewspapers[i].printRun, magazinesAndNewspapers[i].firstName, magazinesAndNewspapers[i].yearOfFoundation);
+            booleanValueNotFound = 0;
+        }
+    }
+    //==================================================
+    /// Ищем значение в Фамилиях главного редактора
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        variableLength = 0; /// Обнуляем переменную
+        booleanForSearchValue = 1; /// true
+        for (int j = 0; magazinesAndNewspapers[i].firstName[j] != '\0'; j++) /// Пока не конец строки выполнять '\0' - Тернирующий ноль (Означает конец строки)
+            variableLength++; /// Инкриментим переменную (Увеличиваем значение переменной на 1)
+        if (lengthVariableSearch != variableLength) /// Если длины не совподают
+            continue; /// Переход к следующей итерации цикла
+        else if (lengthVariableSearch == variableLength)
+        {
+            for (int j = 0; j < lengthVariableSearch; j++)
+            {
+                if (magazinesAndNewspapers[i].firstName[j] != variableSearch[j])
+                {
+                    booleanForSearchValue = 0; /// false
+                    break; /// Выйти из цикла (j)
+                }
+            }
+        }
+        if (booleanForSearchValue == 1)
+        {
+            printf ("\t%s\t\t%d\t\t%s\t\t%d\n", magazinesAndNewspapers[i].name, magazinesAndNewspapers[i].printRun, magazinesAndNewspapers[i].firstName, magazinesAndNewspapers[i].yearOfFoundation);
+            booleanValueNotFound = 0;
+        }
+    }
+    //==================================================
+    /// Ищем значение в годах основаниях
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        itoa (magazinesAndNewspapers[i].yearOfFoundation, intToString, 10); /// Преобразует целое в строку. (int value, char *string, int radix)
+        variableLength = 0; /// Обнуляем переменную
+        booleanForSearchValue = 1; /// true
+        for (int j = 0; intToString[j] != '\0'; j++) /// Пока не конец строки выполнять '\0' - Тернирующий ноль (Означает конец строки)
+            variableLength++; /// Инкриментим переменную (Увеличиваем значение переменной на 1)
+        if (lengthVariableSearch != variableLength) /// Если длины не совподают
+            continue; /// Переход к следующей итерации цикла
+        else if (lengthVariableSearch == variableLength)
+        {
+            for (int j = 0; j < lengthVariableSearch; j++)
+            {
+                if (intToString[j] != variableSearch[j])
+                {
+                    booleanForSearchValue = 0; /// false
+                    break; /// Выйти из цикла (j)
+                }
+            }
+        }
+        if (booleanForSearchValue == 1)
+        {
+            printf ("\t%s\t\t%d\t\t%s\t\t%d\n", magazinesAndNewspapers[i].name, magazinesAndNewspapers[i].printRun, magazinesAndNewspapers[i].firstName, magazinesAndNewspapers[i].yearOfFoundation);
+            booleanValueNotFound = 0;
+        }
+    }
+    //==================================================
+    if (booleanValueNotFound == 1)
+        printf ("\tЗначение не найдено\n");
+}
+
+int main()
+{
+    system ("chcp 1251"); /// Устанавливаем кодовую страницу 1251 (Локализуем русский язык) (Устанавливаем кодировку windows-1251)
+    typeMagazinesAndNewspapers *magazinesAndNewspapers = NULL; /// Объявляем переменную типа указатель
+    int numberMagazinesAndNewspapers; /// Количество журналов и газет
+    char variableForMenu = '-1'; /// Переменная для меню
+    printf ("Введите количество журналов и газет: ");
+    scanf ("%d", &numberMagazinesAndNewspapers);
+    magazinesAndNewspapers = (typeMagazinesAndNewspapers*)malloc(numberMagazinesAndNewspapers * sizeof(typeMagazinesAndNewspapers));
+    /// Заполняем массив структур
+    for (int i = 0; i < numberMagazinesAndNewspapers; i++)
+    {
+        printf ("Введите название %d журнала или газеты: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (magazinesAndNewspapers[i].name); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите тираж %d журнала или газеты: ", i + 1);
+        scanf ("%d", &magazinesAndNewspapers[i].printRun);
+        printf ("Введите фамилию главного редактора %d журнала или газеты: ", i + 1);
+        fflush(stdin); /// Функция отчищает поток ввода
+        gets (magazinesAndNewspapers[i].firstName); /// Функция gets считывает символы из стандартного потока ввода до символа новой строки n
+        printf ("Введите год основания %d журнала или газеты: ", i + 1);
+        scanf ("%d", &magazinesAndNewspapers[i].yearOfFoundation);
+    }
+    system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+    system ("cls"); /// Функция для очистки консоли
+    /// Выполнять пока переменная variableForMenu не будет равна 4
+    while (variableForMenu != '4')
+    {
+        printf ("1. Сортировать по тиражу\n2. Искать\n3. Показать\n4. Выйти\n");
+        variableForMenu = _getch (); /// Функция _getch нужна для чтения одного символа с клавиатуры, этот символ на экран не выводится
+        system ("cls"); /// Функция для очистки консоли
+        switch (variableForMenu)
+        {
+        case '1' :
+            sortMagazinesAndNewspapers (magazinesAndNewspapers, numberMagazinesAndNewspapers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '2' :
+            searchByStructsMagazinesAndNewspapers (magazinesAndNewspapers, numberMagazinesAndNewspapers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '3' :
+            printMagazinesAndNewspapers (magazinesAndNewspapers, numberMagazinesAndNewspapers);
+            system ("pause"); /// Функция ставит на паузу консоль (ожидает нажатие клавиши)
+            system ("cls"); /// Функция для очистки консоли
+            break;
+        case '4' :
+            variableForMenu = '4';
+            break;
+        }
+    }
+    free(magazinesAndNewspapers); /// Освобождаем динамическую память
+    magazinesAndNewspapers = NULL; /// Присваиваем переменной 0 (Освобождаем ссылку)
+    return 0;
+}
+//====================================================================================================

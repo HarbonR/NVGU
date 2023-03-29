@@ -1,0 +1,198 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+#include <time.h> /// Библиотека для работы со временем
+
+/// Функция принимает input массив выделяет память и заполняет output массив неповторяющимися значениями
+void setArray (int *input, int lengthInput, int **output, int *lengthOutput)
+{
+    //==================================================
+    /// Определяем количество неповторяющихся чисел
+    int boolean; /// Булевая переменная
+    int counter = 1; /// Счетчик для подсчета неповторяющихся значений
+    for (int i = 1; i < lengthInput; i++)
+    {
+        boolean = 0; /// Обнуляем булевую переменную
+        for (int j = 0; j < i; j++)
+        {
+            if (input[i] == input[j])
+            {
+                boolean = 1;
+                break; /// Выйти из цикла
+            }
+        }
+        if (boolean == 0)
+        {
+            counter++;
+        }
+    }
+    //==================================================
+    *output = (int*)malloc(counter * sizeof(int)); /// Выделяем динамическую память для массива типа int
+    //==================================================
+    /// Заполняем выходной массив неповторяющимися числами
+    counter = 1;
+    *output[0] = input[0]; /// Записываем первый элемент выходного массива
+    for (int i = 1; i < lengthInput; i++)
+    {
+        boolean = 0;
+        for (int j = 0; j < i; j++)
+        {
+            if (input[i] == input[j])
+            {
+                boolean = 1;
+                break; /// Выйти из цикла
+            }
+        }
+        if (boolean == 0)
+        {
+            (*output)[counter] = input[i]; /// Разименовываем ссылку на динамический массив и двигаемся по этому массиву заполняя неповторяющимися значения из input массива
+            counter++;
+        }
+    }
+    //==================================================
+    *lengthOutput = counter; /// Разименовываем переменную и присваиваем значение переменной counter
+}
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    srand(time(NULL)); /// Ключ для рандомайзера
+    FILE *inputFile; /// Переменная типа файл
+    FILE *outputFile; /// Переменная типа файл
+    int *outputArrayRandomNumber = NULL; /// Ссылка на выходной массив рандомных чисел
+    int lengthOutputArrayRandomNumber; /// Длина выходного массива рандомных чисел
+    int *inputArrayRandomNumber = NULL; /// Ссылка на входной массив рандомных чисел
+    int numberByte = 0; /// Переменная для определения количества байт занимаемые файлом
+    printf("Введите количестиво рандомных чисел: ");
+    scanf("%d", &lengthOutputArrayRandomNumber);
+    outputArrayRandomNumber = (int*)malloc(lengthOutputArrayRandomNumber * sizeof(int)); /// Выделяем динамическую память для массива типа int
+    //==================================================
+    /// Заполняем динамический массив рандомными числами
+    for (int i = 0; i < lengthOutputArrayRandomNumber; i++)
+    {
+        outputArrayRandomNumber[i] = rand () % 9 + 1; /// Присваиваем элементу массива под индексом i рандомное значение
+    }
+    //==================================================
+    /// Открываем бинарный файл для записи рандомных чисел
+    inputFile = fopen ("inputFile.dat", "wb"); /// Открываем бинарный файл для записи
+    if (inputFile == NULL)
+    {
+        printf ("Ошибка открытия файла\n");
+    }
+    else
+    {
+        fwrite (outputArrayRandomNumber, sizeof(int), lengthOutputArrayRandomNumber, inputFile);
+        fclose(inputFile); /// Закрываем файл
+    }
+    //==================================================
+    /// Выводим в консоль записанный в файл массив
+    printf ("\nРандомные числа записанные в inputFile файл: ");
+    for (int i = 0; i < lengthOutputArrayRandomNumber; i++)
+    {
+        printf("%d ", outputArrayRandomNumber[i]);
+    }
+    printf("\n\n"); /// Пропускаем 2 строки
+    //==================================================
+    free (outputArrayRandomNumber); /// Освобождаем динамическую память
+    outputArrayRandomNumber = NULL; /// Обнуляем ссылку
+    //==================================================
+    /// Открываем файл для определения количества байт занимаемые файлом
+    inputFile = fopen ("inputFile.dat", "rb"); /// Открываем бинарный файл для чтения
+    if (inputFile == NULL)
+    {
+        printf ("Ошибка открытия файла\n");
+    }
+    else
+    {
+        while (getc(inputFile) != EOF) /// Выполнять пока не конец файла (EOF). getc - чтение одного байта из указанного потока данных.
+        {
+            numberByte++;
+        }
+        fclose(inputFile); /// Закрываем файл
+    }
+    inputArrayRandomNumber = (int*)malloc(numberByte); /// Выделяем динамическую память для массива
+    //==================================================
+    /// Открываем файл для записи данных из файла в массив
+    inputFile = fopen ("inputFile.dat", "rb");
+    if (inputFile == NULL)
+    {
+        printf("Ошибка открытия файла\n");
+    }
+    else
+    {
+        fread(inputArrayRandomNumber, sizeof(int), numberByte / sizeof(int), inputFile);
+        fclose(inputFile); /// Закрываем файл
+    }
+    //==================================================
+    printf ("Рандомные числа прочтёные из inputFile файла: ");
+    for (int i = 0; i < numberByte / sizeof(inputArrayRandomNumber[0]); i++)
+    {
+        printf("%d ", inputArrayRandomNumber[i]);
+    }
+    //==================================================
+    setArray(inputArrayRandomNumber, numberByte / sizeof(inputArrayRandomNumber[0]) ,&outputArrayRandomNumber, &lengthOutputArrayRandomNumber);
+    //==================================================
+    printf("\n\nНе повторяющиеся числа прочтёные из inputFile файла: ");
+    for (int i = 0; i < lengthOutputArrayRandomNumber; i++)
+    {
+        printf ("%d ", outputArrayRandomNumber[i]);
+    }
+    //==================================================
+    free (inputArrayRandomNumber); /// Освобождаем динамическую память
+    inputArrayRandomNumber = NULL; /// Обнуляем ссылку
+    //==================================================
+    /// Открываем файл для записи данных из массива в файл
+    outputFile = fopen ("outputFile.dat", "wb");
+    if (outputFile == NULL)
+    {
+        printf("Ошибка открытия файла\n");
+    }
+    else
+    {
+        fwrite(outputArrayRandomNumber, sizeof(int), lengthOutputArrayRandomNumber, outputFile);
+        fclose(outputFile); /// Закрываем файл
+    }
+    //==================================================
+    free (outputArrayRandomNumber); /// Освобождаем динамическую память
+    outputArrayRandomNumber = NULL; /// Обнуляем ссылку
+    //==================================================
+    numberByte = 0; /// Обнуляем переменную
+    /// Открываем файл для определения количества байт занимаемые файлом
+    outputFile = fopen ("outputFile.dat", "rb"); /// Открываем бинарный файл для чтения
+    if (outputFile == NULL)
+    {
+        printf ("Ошибка открытия файла\n");
+    }
+    else
+    {
+        while (getc(outputFile) != EOF) /// Выполнять пока не конец файла (EOF). getc - чтение одного байта из указанного потока данных.
+        {
+            numberByte++;
+        }
+        fclose(outputFile); /// Закрываем файл
+    }
+    inputArrayRandomNumber = (int*)malloc(numberByte); /// Выделяем динамическую память для массива
+    //==================================================
+    /// Открываем файл для записи данных из файла в массив
+    outputFile = fopen ("outputFile.dat", "rb");
+    if (outputFile == NULL)
+    {
+        printf("Ошибка открытия файла\n");
+    }
+    else
+    {
+        fread(inputArrayRandomNumber, sizeof(int), numberByte / sizeof(int), inputFile);
+        fclose(outputFile); /// Закрываем файл
+    }
+    //==================================================
+    printf ("\n\nНе повторяющиеся числа прочтёные из outputFile файла: ");
+    for (int i = 0; i < numberByte / sizeof(inputArrayRandomNumber[0]); i++)
+    {
+        printf("%d ", inputArrayRandomNumber[i]);
+    }
+    //==================================================
+    free (inputArrayRandomNumber); /// Освобождаем динамическую память
+    inputArrayRandomNumber = NULL; /// Обнуляем ссылку
+    printf("\n"); /// Пропускаем строку
+    return 0;
+ }

@@ -1,0 +1,448 @@
+#include <stdio.h> /// Библиотека ввода-вывода.
+#include <locale.h> /// Библиотека для локализации языков.
+#include <stdlib.h> /// Стандартная библиотека.
+#include <conio.h> /// Библиотека функций для работы с вводом-выводом.
+#include <time.h> /// Библиотека для работы со временем.
+
+//====================================================================================================
+/// Функции для задания 4 часть 1
+
+typedef int typeDataInt;
+
+/// Структура листа.
+typedef struct nameList
+{
+  typeDataInt data; /// Данные листа типа typeData
+  struct nameList *nextList; /// Структура nameList.
+}typeList; /// Тип структуры nameList.
+
+/// Структура для заполнения листа.
+typedef struct
+{
+    typeList *head;
+    typeList *nextElement;
+    typeList *variableElement;
+}typeLists; /// Тип структуры typeLists.
+
+/// Функция принимает лист и данные. Добавляет в конец списка. Ничего не возвращает.
+void addNewElementInListTypeDataInt (typeLists *inputList, typeDataInt inputData)
+{
+    if(inputList->head == NULL)
+    {
+        inputList->head = (typeList*) malloc(sizeof(typeList));
+        inputList->head->data = inputData;
+        inputList->head->nextList = NULL;
+    }
+    else if (inputList->nextElement == NULL)
+    {
+        inputList->nextElement = (typeList*) malloc(sizeof(typeList));
+        inputList->head->nextList = inputList->nextElement;
+        inputList->nextElement->data = inputData;
+        inputList->nextElement->nextList = NULL;
+    }
+    else
+    {
+        inputList->nextElement->nextList = (typeList*) malloc(sizeof(typeList));
+        inputList->nextElement = inputList->nextElement->nextList;
+        inputList->nextElement->data = inputData;
+        inputList->nextElement->nextList = NULL;
+    }
+}
+
+/// Функция принимает лист. Выводит лист на экран. Ничего не возвращает.
+void printListDataTypeInt (typeLists inputList)
+{
+    typeList *variableList = inputList.head;
+    while(variableList != NULL)
+    {
+        printf("%d ", variableList->data);
+        variableList = variableList->nextList;
+    }
+    printf("\n");
+}
+
+/// Фукция принимает два листа. Добавляет второй лист к первому. Ничего не возвращает.
+void addListTwoToListOne (typeLists inputListOne, typeLists inputListTwo)
+{
+    typeList *variableList = inputListTwo.head;
+    while(variableList != NULL)
+    {
+        addNewElementInListTypeDataInt(&inputListOne, variableList->data);
+        variableList = variableList->nextList;
+    }
+}
+
+/// Функция принимает лист. Удаляет лист. Ничего не возвращает.
+void freeList (typeLists *inputList)
+{
+    typeList *head = inputList->head;
+    typeList *variableList = head;
+    while (head != NULL)
+    {
+        head = variableList->nextList;
+        free(variableList);
+        variableList = head;
+    }
+    inputList->head = NULL; /// Обнуляем ссылку для головы листа.
+    inputList->nextElement = NULL; /// Обнуляем ссылку для следующего элемента листа.
+    inputList->variableElement = NULL; /// Обнуляем ссылку для переменного элемента листа.
+}
+
+//====================================================================================================
+/// Функции для задания 9 часть 1
+
+typedef float typeDataFloat;
+
+/// Структура листа.
+typedef struct nameListTypeDataFloat
+{
+  typeDataFloat data; /// Данные листа типа typeData
+  struct nameListTypeDataFloat *nextList; /// Структура nameListTypeDataFloat.
+}typeListTypeDataFloat; /// Тип структуры nameListTypeDataFloat.
+
+/// Структура для заполнения листа.
+typedef struct
+{
+    typeListTypeDataFloat *head;
+    typeListTypeDataFloat *nextElement;
+    typeListTypeDataFloat *variableElement;
+}typeListsTypeDataFloat; /// Тип структуры typeListsTypeDataFloat.
+
+/// Функция принимает лист и данные. Добавляет в конец списка. Ничего не возвращает.
+void addNewElementInListTypeDataFloat (typeListsTypeDataFloat *inputList, typeDataFloat inputData)
+{
+    if(inputList->head == NULL)
+    {
+        inputList->head = (typeListTypeDataFloat*) malloc(sizeof(typeListTypeDataFloat));
+        inputList->head->data = inputData;
+        inputList->head->nextList = NULL;
+    }
+    else if (inputList->nextElement == NULL)
+    {
+        inputList->nextElement = (typeListTypeDataFloat*) malloc(sizeof(typeListTypeDataFloat));
+        inputList->head->nextList = inputList->nextElement;
+        inputList->nextElement->data = inputData;
+        inputList->nextElement->nextList = NULL;
+    }
+    else
+    {
+        inputList->nextElement->nextList = (typeListTypeDataFloat*) malloc(sizeof(typeListTypeDataFloat));
+        inputList->nextElement = inputList->nextElement->nextList;
+        inputList->nextElement->data = inputData;
+        inputList->nextElement->nextList = NULL;
+    }
+}
+
+/// Функция принимает лист. Выводит лист на экран. Ничего не возвращает.
+void printListDataTypeFloat (typeListsTypeDataFloat inputList)
+{
+    typeListTypeDataFloat *variableList = inputList.head;
+    while(variableList != NULL)
+    {
+        printf("%.4f ", variableList->data);
+        variableList = variableList->nextList;
+    }
+    printf("\n");
+}
+
+/// Функция принимает лист. Удаляет лист. Ничего не возвращает.
+void freeListDataTypeFloat (typeListsTypeDataFloat *inputList)
+{
+    typeListTypeDataFloat *head = inputList->head;
+    typeListTypeDataFloat *variableList = head;
+    while (head != NULL)
+    {
+        head = variableList->nextList;
+        free(variableList);
+        variableList = head;
+    }
+    inputList->head = NULL; /// Обнуляем ссылку для головы листа.
+    inputList->nextElement = NULL; /// Обнуляем ссылку для следующего элемента листа.
+    inputList->variableElement = NULL; /// Обнуляем ссылку для переменного элемента листа.
+}
+
+/// Функция принимает лист. Складывает данные листа. Возвращает сумму.
+float summDataListTypeFloat (typeListsTypeDataFloat inputList)
+{
+    typeListTypeDataFloat *variableList = inputList.head;
+    typeDataFloat variableSumm = 0;
+    while(variableList != NULL)
+    {
+        variableSumm += variableList->data;
+        variableList = variableList->nextList;
+    }
+    return variableSumm;
+}
+
+//====================================================================================================
+/// Функции для задания 4 часть 2
+
+/// Принимает ссылку на список и данные. Удаляет элемент из списка перед данными. Ничего не возвращает.
+void deleteElementListAfterElement (typeLists *inputList, typeDataInt inputData)
+{
+    typeList *variablePointerForSavePointerPreviousElement;
+    typeList *variableList = inputList->head;
+    while (variableList != NULL)
+    {
+        variablePointerForSavePointerPreviousElement = variableList;
+        if (variableList->data == inputData)
+        {
+            variableList = variableList->nextList;
+            if (variableList->data != inputData)
+            {
+                variablePointerForSavePointerPreviousElement->nextList = variableList->nextList;
+                free(variableList);
+            }
+        }
+        variableList = variableList->nextList;
+    }
+}
+
+//====================================================================================================
+/// Функции для задания 9 часть 2
+
+/// Функция принимает лист и данные. Добавляет в начало списка. Ничего не возвращает.
+void addNewElementInHeadToListTypeDataInt (typeLists *inputList, typeDataInt inputData)
+{
+    if (inputList->head == NULL)
+    {
+        inputList->head = (typeList*)malloc(sizeof(typeList));
+        inputList->head->data = inputData;
+        inputList->head->nextList = NULL;
+    }
+    else if (inputList->nextElement == NULL)
+    {
+        inputList->nextElement = (typeList*)malloc(sizeof(typeList));
+        inputList->nextElement->data = inputData;
+        inputList->nextElement->nextList = inputList->head;
+        inputList->head = inputList->nextElement;
+        inputList->nextElement = inputList->head->nextList;
+    }
+    else
+    {
+        inputList->variableElement = (typeList*)malloc(sizeof(typeList));
+        inputList->variableElement->data = inputData;
+        inputList->variableElement->nextList = inputList->head;
+        inputList->head = inputList->variableElement;
+    }
+}
+
+/// Принимает ссылку на список. Переворачивает список. Возвращает перевернутый список.
+typeLists expandList (typeLists *inputList)
+{
+    typeLists variableLists;
+    variableLists.head = NULL;
+    variableLists.nextElement = NULL;
+    typeList *variableList = inputList->head;
+    while(variableList != NULL)
+    {
+        addNewElementInHeadToListTypeDataInt(&variableLists, variableList->data);
+        variableList = variableList->nextList;
+    }
+    return variableLists;
+}
+
+//====================================================================================================
+
+int main ()
+{
+    //====================================================================================================
+
+    setlocale (LC_ALL, "Rus");
+    srand(time(NULL)); /// Ключ для рандомайзера.
+
+    //====================================================================================================
+    /// Переменные.
+
+    char variableForMenu;
+    typeLists listOne; /// Переменная типа лист 1.
+    typeLists listTwo; /// Переменная типа лист 2.
+    typeDataInt variableForDataListTypeInt;
+    int numberElementList;
+    typeListsTypeDataFloat listOneDataTypeFloat;
+    typeDataFloat variableForDataListTypeFloat;
+    typeDataFloat summDataTypeFloat;
+    typeDataInt variableForFunctionDeleteElementListAfterElement;
+
+    //====================================================================================================
+    /// Инициализация.
+
+    listOne.head = NULL; /// Обнуляем ссылку для головы листа.
+    listOne.nextElement = NULL; /// Обнуляем ссылку для следующего элемента листа.
+    listTwo.head = NULL; /// Обнуляем ссылку для головы листа.
+    listTwo.nextElement = NULL; /// Обнуляем ссылку для следующего элемента листа.
+    listOneDataTypeFloat.head = NULL; /// Обнуляем ссылку для головы листа.
+    listOneDataTypeFloat.nextElement = NULL; /// Обнуляем ссылку для следующего элемента листа.
+
+    //====================================================================================================
+    while(variableForMenu != 'E')
+    {
+        printf("==============================Menu laboratory work 11==============================\n");
+        printf("1. (Задание 4 часть 1) Написать процедуру присоединения списка L2 к списку L1.\n");
+        printf("2. (Задание 9 часть 1) Сформировать список вещественных чисел и вычислить сумму.\n");
+        printf("3. (Задание 4 часть 2) Составить программу, которая удаляет из списка L за каждым\n");
+        printf("вхождением элемента Е один элемент, если таковой имеется и он отличен от Е.\n");
+        printf("4. (Задание 9 часть 2) Составить программу, которая переворачивает список L, т.е.\n");
+        printf("изменяет ссылки в этом списке так, чтобы его элементы оказались расположенными\n");
+        printf("в обратном порядке.\n");
+        printf("E. Выход\n");
+        printf("===================================================================================\n");
+        variableForMenu = getch();
+        system("cls");
+        //====================================================================================================
+        if (variableForMenu == '1')
+        {
+            while (variableForMenu != 'e')
+            {
+                printf("1. Заполнить список\n");
+                printf("2. Удалить списки\n");
+                printf("e. Выйти из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    printf("Введите количество элементов списка 1: ");
+                    scanf("%d", &numberElementList);
+                    for (int i = 0; i < numberElementList; i++)
+                    {
+                        variableForDataListTypeInt = rand() % 9 + 1;
+                        addNewElementInListTypeDataInt(&listOne, variableForDataListTypeInt);
+                    }
+                    printListDataTypeInt(listOne);
+                    printf("Введите количество элементов списка 2: ");
+                    scanf("%d", &numberElementList);
+                    for (int i = 0; i < numberElementList; i++)
+                    {
+                        variableForDataListTypeInt = rand() % 9 + 1;
+                        addNewElementInListTypeDataInt(&listTwo, variableForDataListTypeInt);
+                    }
+                    printListDataTypeInt(listTwo);
+                    addListTwoToListOne(listOne, listTwo);
+                    printf("Список 1 + список 2:\n");
+                    printListDataTypeInt(listOne);
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    freeList(&listOne);
+                    freeList(&listTwo);
+                    printf("Списки удалены\n");
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        else if (variableForMenu == '2')
+        {
+            while (variableForMenu != 'e')
+            {
+                printf("1. Заполнить список\n");
+                printf("2. Удалить списки\n");
+                printf("e. Выйти из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    printf("Введите количество элементов списка: ");
+                    scanf("%d", &numberElementList);
+                    for (int i = 0; i < numberElementList; i++)
+                    {
+                        scanf("%f", &variableForDataListTypeFloat);
+                        addNewElementInListTypeDataFloat(&listOneDataTypeFloat, variableForDataListTypeFloat);
+                    }
+                    printf("Список: ");
+                    printListDataTypeFloat(listOneDataTypeFloat);
+                    summDataTypeFloat = summDataListTypeFloat(listOneDataTypeFloat);
+                    printf("Сумма: %.4f\n", summDataTypeFloat);
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    freeListDataTypeFloat(&listOneDataTypeFloat);
+                    printf("Списки удалены\n");
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        if (variableForMenu == '3')
+        {
+            while (variableForMenu != 'e')
+            {
+                printf("1. Заполнить список\n");
+                printf("2. Удалить списки\n");
+                printf("e. Выйти из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    printf("Введите количество элементов списка 1: ");
+                    scanf("%d", &numberElementList);
+                    for (int i = 0; i < numberElementList; i++)
+                    {
+                        variableForDataListTypeInt = rand() % 9 + 1;
+                        addNewElementInListTypeDataInt(&listOne, variableForDataListTypeInt);
+                    }
+                    printf("Список: ");
+                    printListDataTypeInt(listOne);
+                    printf("Введите елемент списка за которым нужно удалить элемент: ");
+                    scanf("%d", &variableForFunctionDeleteElementListAfterElement);
+                    deleteElementListAfterElement(&listOne, variableForFunctionDeleteElementListAfterElement);
+                    printf("Изменённый cписок: ");
+                    printListDataTypeInt(listOne);
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    freeList(&listOne);
+                    printf("Список удален\n");
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+        if (variableForMenu == '4')
+        {
+            while (variableForMenu != 'e')
+            {
+                printf("1. Заполнить список\n");
+                printf("2. Удалить списки\n");
+                printf("e. Выйти из задания\n");
+                variableForMenu = getch();
+                system("cls");
+                if (variableForMenu == '1')
+                {
+                    printf("Введите количество элементов списка 1: ");
+                    scanf("%d", &numberElementList);
+                    for (int i = 0; i < numberElementList; i++)
+                    {
+                        variableForDataListTypeInt = rand() % 9 + 1;
+                        addNewElementInListTypeDataInt(&listOne, variableForDataListTypeInt);
+                    }
+                    printf("Список: ");
+                    printListDataTypeInt(listOne);
+                    listOne = expandList(&listOne);
+                    printf("Список в обратном порядке: ");
+                    printListDataTypeInt(listOne);
+                    system("pause");
+                    system("cls");
+                }
+                else if (variableForMenu == '2')
+                {
+                    freeList(&listOne);
+                    printf("Список удален\n");
+                    system("pause");
+                    system("cls");
+                }
+            }
+        }
+        //====================================================================================================
+    }
+    return 0;
+}

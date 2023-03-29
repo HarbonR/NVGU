@@ -1,0 +1,44 @@
+#include <stdio.h> /// Стандартная библиотека ввода-вывода
+#include <stdlib.h> /// Стандартная библиотека
+#include <locale.h> /// Библиотека для локализации языка
+
+typedef struct
+{
+    char name[30]; /// Название
+    int square; /// Площадь
+    char capital[30]; /// Столица
+    int population; /// Население
+}typeCountries;
+
+int main ()
+{
+    setlocale (LC_ALL, "Rus"); /// Локализуем русский язык
+    typeCountries *countries = NULL; /// Переменная указатель на структуру typeCountries
+    int numberCountries; /// Количество стран
+    int searchPopulation; /// Переменная "искать население"
+    printf ("Введите количество стран: ");
+    scanf ("%d", &numberCountries);
+    countries = (typeCountries*)malloc(numberCountries * sizeof(typeCountries)); /// Выделяем динамическую память размером numberCountries тип данных typeCountries и присваиваем ссылку на динамическую память переменной указатель countries
+    for (int i = 0; i < numberCountries; i++)
+    {
+        printf ("Введите название %d страны: ", i + 1);
+        scanf ("%s", &countries[i].name);
+        printf ("Введите площадь %d страны: ", i + 1);
+        scanf ("%d", &countries[i].square);
+        printf ("Введите столицу %d страны: ", i + 1);
+        scanf ("%s", &countries[i].capital);
+        printf ("Введите население %d страны: ", i + 1);
+        scanf ("%d", &countries[i].population);
+    }
+    printf ("Введите население: ");
+    scanf ("%d", &searchPopulation);
+    for (int i = 0; i < numberCountries; i++)
+    {
+        if (countries[i].population < searchPopulation)
+            printf ("Название: %s\tПлощадь: %d\tСтолица: %s\tНаселение: %d\n", countries[i].name, countries[i].square, countries[i].capital, countries[i].population);
+
+    }
+    free(countries); /// Оствобождаем выделенную динамическую память
+    countries = NULL; /// Обнуляем переменную указатель
+    return 0;
+}
